@@ -11,16 +11,20 @@ namespace TradingCardGame {
 
         public Deck() {
             Cards = new List<Card>()
-                .Concat(Enumerable.Repeat(new Card(0), Pair))
-                .Concat(Enumerable.Repeat(new Card(1), Pair))
-                .Concat(Enumerable.Repeat(new Card(2), Trio))
-                .Concat(Enumerable.Repeat(new Card(3), Quartet))
-                .Concat(Enumerable.Repeat(new Card(4), Trio))
-                .Concat(Enumerable.Repeat(new Card(5), Pair))
-                .Concat(Enumerable.Repeat(new Card(6), Pair))
-                .Concat(Enumerable.Repeat(new Card(7), Single))
-                .Concat(Enumerable.Repeat(new Card(8), Single))
+                .Concat(Group(new Card(0), Pair))
+                .Concat(Group(new Card(1), Pair))
+                .Concat(Group(new Card(2), Trio))
+                .Concat(Group(new Card(3), Quartet))
+                .Concat(Group(new Card(4), Trio))
+                .Concat(Group(new Card(5), Pair))
+                .Concat(Group(new Card(6), Pair))
+                .Concat(Group(new Card(7), Single))
+                .Concat(Group(new Card(8), Single))
                 .ToList();
+        }
+
+        private static IEnumerable<Card> Group(Card card, int amount) {
+            return Enumerable.Repeat(card, amount);
         }
     }
 }
