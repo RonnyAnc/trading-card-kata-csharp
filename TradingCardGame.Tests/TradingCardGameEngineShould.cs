@@ -6,8 +6,6 @@ using NUnit.Framework;
 
 namespace TradingCardGame.Tests {
     public class TradingCardGameEngineShould {
-        //TODO: probably move all players tests here
-
         [Test]
         public void start_a_game_where_players_start_with_initial_health() {
             var game = CardGame.Start("GameId", "FirstPlayer", "SecondPlayer");
