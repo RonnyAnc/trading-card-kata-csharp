@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -17,29 +16,6 @@ namespace TradingCardGame.Tests {
 
             var dudCards = deck.Cards.Where(card => card.ManaCost == 0 && card.Damage == 0).ToList();
             dudCards.Should().HaveCount(2);
-        }
-    }
-
-    public class Deck {
-        private const int NumberOfDudCards = 2;
-        private const int NumberOfTotalCards = 20;
-        public List<Card> Cards { get; }
-
-        public Deck() {
-            Cards = new List<Card>()
-                .Concat(Enumerable.Repeat(new Card(0), NumberOfDudCards))
-                .Concat(Enumerable.Repeat(new Card(10), NumberOfTotalCards - NumberOfDudCards))
-                .ToList();
-        }
-    }
-
-    public class Card {
-        public int ManaCost { get; }
-        public int Damage { get; }
-
-        public Card(int manaCost) {
-            ManaCost = manaCost;
-            Damage = ManaCost;
         }
     }
 }
