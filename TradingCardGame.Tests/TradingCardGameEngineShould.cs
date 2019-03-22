@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace TradingCardGame.Tests {
     public class TradingCardGameEngineShould {
         [Test]
-        public void start_a_game_where_players_start_with_initial_health() {
+        public void start_with_2_players_that_have_initial_health() {
             var game = CardGame.Start("GameId", "FirstPlayer", "SecondPlayer");
 
             var gameStarted = game.DomainEvents.OfType<GameStarted>().Single();
@@ -19,7 +19,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void start_a_game_where_both_players_has_no_mana() {
+        public void start_with_players_that_have_no_mana() {
             var game = CardGame.Start("GameId", "FirstPlayer", "SecondPlayer");
 
             var gameStarted = game.DomainEvents.OfType<GameStarted>().Single();
@@ -29,7 +29,7 @@ namespace TradingCardGame.Tests {
 
 
         [Test]
-        public void have_start_with_a_deck_with_20_cards() {
+        public void start_players_that_have_decks_with_20_cards() {
             var game = CardGame.Start("GameId", "FirstPlayer", "SecondPlayer");
 
             var gameStarted = game.DomainEvents.OfType<GameStarted>().Single();
@@ -46,7 +46,7 @@ namespace TradingCardGame.Tests {
         [TestCase(6, 2)]
         [TestCase(7, 1)]
         [TestCase(8, 1)]
-        public void deck_must_have_N_cards_with_same_X_mana_cost_than_damage(int manaCost, int amountOfCards) {
+        public void start_with_players_that_have_decks_with_N_cards_with_same_X_mana_cost_than_damage(int manaCost, int amountOfCards) {
             var game = CardGame.Start("GameId", "FirstPlayer", "SecondPlayer");
 
             var gameStarted = game.DomainEvents.OfType<GameStarted>().Single();
@@ -61,6 +61,11 @@ namespace TradingCardGame.Tests {
                 .CardsInDeck
                 .Filter(card => card.ManaCost == manaCost && card.Damage == damage).ToList();
             secondPlayerCards.Should().HaveCount(amountOfCards);
+        }
+
+        [Test, Ignore("")]
+        public void allow_player_to_take_3_cards_in_his_initial_hand() {
+            //CardGame.Rebuild();
         }
     }
 
