@@ -16,5 +16,11 @@ namespace TradingCardGame.Tests {
             var player = Player.Create();
             player.Mana.Should().Be(0);
         }
+
+        [Test]
+        public void have_start_with_a_deck_with_20_cards() {
+            var player = Player.Create();
+            player.Deck.Cards.Should().HaveCount(20);
+        }
     }
 }

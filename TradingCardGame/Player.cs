@@ -1,15 +1,14 @@
 ﻿namespace TradingCardGame {
     public class Player {
         private const int InitialHealth = 30;
-        public int Health { get; }
+        public int Health => InitialHealth;
         public int Mana => 0;
+        public Deck Deck { get; }
 
         private Player() {
-            Health = InitialHealth;
+            Deck = Deck.Create();
         }
 
-        public static Player Create() {
-            return new Player();
-        }
+        public static Player Create() => new Player();
     }
 }
