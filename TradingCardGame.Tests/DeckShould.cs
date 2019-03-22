@@ -4,12 +4,6 @@ using NUnit.Framework;
 
 namespace TradingCardGame.Tests {
     public class DeckShould {
-        [Test]
-        public void deck_must_have_20_cards() {
-            var deck = Deck.Create();
-            deck.Cards.Should().HaveCount(20);
-        }
-
         [TestCase(0, 2)]
         [TestCase(1, 2)]
         [TestCase(2, 3)]
