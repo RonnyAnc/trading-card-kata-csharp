@@ -7,10 +7,11 @@ namespace TradingCardGame {
         private const int Pair = 2;
         private const int Trio = 3;
         private const int Quartet = 4;
+        private const int DeckSize = 20;
         public List<Card> Cards { get; }
 
-        public Deck() {
-            Cards = new List<Card>()
+        private Deck() {
+            Cards = new List<Card>(DeckSize)
                 .Concat(Group(new Card(0), Pair))
                 .Concat(Group(new Card(1), Pair))
                 .Concat(Group(new Card(2), Trio))
@@ -21,6 +22,10 @@ namespace TradingCardGame {
                 .Concat(Group(new Card(7), Single))
                 .Concat(Group(new Card(8), Single))
                 .ToList();
+        }
+
+        public static Deck Create() {
+            return new Deck();
         }
 
         private static IEnumerable<Card> Group(Card card, int amount) {
