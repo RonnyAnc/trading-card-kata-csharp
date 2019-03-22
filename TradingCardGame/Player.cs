@@ -1,12 +1,15 @@
-﻿namespace TradingCardGame {
+﻿using System.Collections.Generic;
+
+namespace TradingCardGame {
     public class Player {
         private const int InitialHealth = 30;
         public int Health => InitialHealth;
         public int Mana => 0;
-        public Deck Deck { get; }
+        public List<Card> CardsInDeck => deck.Cards;
+        private readonly Deck deck;
 
         private Player() {
-            Deck = Deck.Create();
+            deck = Deck.Create();
         }
 
         public static Player Create() => new Player();

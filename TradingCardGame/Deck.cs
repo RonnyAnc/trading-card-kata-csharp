@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace TradingCardGame {
-    public class Deck {
+    internal class Deck {
         private const int Single = 1;
         private const int Pair = 2;
         private const int Trio = 3;
@@ -24,7 +24,7 @@ namespace TradingCardGame {
                 .ToList();
         }
 
-        public static Deck Create() {
+        internal static Deck Create() {
             return new Deck();
         }
 

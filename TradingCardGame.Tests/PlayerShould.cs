@@ -21,7 +21,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void have_start_with_a_deck_with_20_cards() {
             var player = Player.Create();
-            player.Deck.Cards.Should().HaveCount(20);
+            player.CardsInDeck.Should().HaveCount(20);
         }
 
         [TestCase(0, 2)]
@@ -37,7 +37,7 @@ namespace TradingCardGame.Tests {
             var player = Player.Create();
 
             var damage = manaCost;
-            var cards = player.Deck.Cards.Where(card => card.ManaCost == manaCost && card.Damage == damage).ToList();
+            var cards = player.CardsInDeck.Where(card => card.ManaCost == manaCost && card.Damage == damage).ToList();
             cards.Should().HaveCount(amountOfCards);
         }
     }
