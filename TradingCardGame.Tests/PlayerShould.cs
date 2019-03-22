@@ -37,7 +37,8 @@ namespace TradingCardGame.Tests {
             var player = Player.Create();
 
             var damage = manaCost;
-            var cards = player.CardsInDeck.Where(card => card.ManaCost == manaCost && card.Damage == damage).ToList();
+
+            var cards = player.CardsInDeck.Filter(card => card.ManaCost == manaCost && card.Damage == damage).ToList();
             cards.Should().HaveCount(amountOfCards);
         }
     }
