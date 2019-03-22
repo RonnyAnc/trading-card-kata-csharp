@@ -21,12 +21,14 @@ namespace TradingCardGame.Tests {
     }
 
     public class Deck {
+        private const int NumberOfDudCards = 2;
+        private const int NumberOfTotalCards = 20;
         public List<Card> Cards { get; }
 
         public Deck() {
             Cards = new List<Card>()
-                .Concat(Enumerable.Repeat(new Card(0), 2))
-                .Concat(Enumerable.Repeat(new Card(10), 18))
+                .Concat(Enumerable.Repeat(new Card(0), NumberOfDudCards))
+                .Concat(Enumerable.Repeat(new Card(10), NumberOfTotalCards - NumberOfDudCards))
                 .ToList();
         }
     }
