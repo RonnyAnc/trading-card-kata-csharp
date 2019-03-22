@@ -10,5 +10,11 @@ namespace TradingCardGame.Tests {
             var player = Player.Create();
             player.Health.Should().Be(InitialHealth);
         }
+
+        [Test]
+        public void start_with_no_mana() {
+            var player = Player.Create();
+            player.Mana.Should().Be(0);
+        }
     }
 }
