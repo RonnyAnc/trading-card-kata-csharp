@@ -6,6 +6,7 @@ namespace TradingCardGame.Tests {
     public class Duel {
         private readonly string id;
         private readonly List<DomainEvent> events = new List<DomainEvent>();
+        private List<string> duelists = new List<string>();
 
         private Duel(string id) {
             this.id = id;
@@ -24,7 +25,10 @@ namespace TradingCardGame.Tests {
         }
 
         public void AddDuelist(string duelistId) {
+            duelists.Add(duelistId);
             events.Add(new DuelistJoined(duelistId));
+            if (duelists.Count == 2) 
+                events.Add(new AllDuelistsJoined(id));
         }
     }
 }
