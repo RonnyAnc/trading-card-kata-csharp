@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TradingCardGame.Tests {
+namespace TradingCardGame {
     public class DuelistJoined : DomainEvent, IEquatable<DuelistJoined> {
         public string DuelId { get; }
         public string DuelistId { get; }

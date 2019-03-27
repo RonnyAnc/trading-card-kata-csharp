@@ -1,3 +1,3 @@
-﻿namespace TradingCardGame.Tests {
+﻿namespace TradingCardGame {
     public interface DomainEvent { }
 }

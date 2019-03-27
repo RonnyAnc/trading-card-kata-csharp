@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using NUnit.Framework.Constraints;
 
-namespace TradingCardGame.Tests {
+namespace TradingCardGame {
     public class Duel {
         private readonly string id;
         private readonly List<DomainEvent> events = new List<DomainEvent>();
@@ -26,7 +25,7 @@ namespace TradingCardGame.Tests {
 
         public void AddDuelist(string duelistId) {
             duelists.Add(duelistId);
-            events.Add(new DuelistJoined(duelistId));
+            events.Add(new DuelistJoined(id, duelistId));
             if (duelists.Count == 2) 
                 events.Add(new AllDuelistsJoined(id));
         }
