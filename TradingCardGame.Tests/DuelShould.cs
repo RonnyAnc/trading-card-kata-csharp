@@ -15,13 +15,14 @@ namespace TradingCardGame.Tests {
 
         [Test]
         public void prepare_a_duelist_joined_when_adding_a_duelist() {
-            var duel = Duel.Rebuild("anyId");
+            const string duelId = "anyId";
+            var duel = Duel.Rebuild(duelId);
 
             const string duelistId = "aDuelist";
             duel.AddDuelist(duelistId);
 
             duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new DuelistJoined(duelistId)));
+            duel.Events.Should().Contain(x => x.Equals(new DuelistJoined(duelId, duelistId)));
         }
 
         [Test]
