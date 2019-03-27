@@ -13,7 +13,7 @@ namespace TradingCardGame.Tests {
 
         public ReadOnlyCollection<DomainEvent> Events => this.events.AsReadOnly();
 
-        public static Duel Start(string id) {
+        public static Duel Call(string id) {
             var duel = new Duel(id);
             duel.events.Add(new DuelCalled(id));
             return duel;
