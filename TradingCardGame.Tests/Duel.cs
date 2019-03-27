@@ -18,5 +18,13 @@ namespace TradingCardGame.Tests {
             duel.events.Add(new DuelCalled(id));
             return duel;
         }
+
+        public static Duel Rebuild(string id) {
+            return new Duel(id);
+        }
+
+        public void AddDuelist(string duelistId) {
+            events.Add(new DuelistJoined(duelistId));
+        }
     }
 }
