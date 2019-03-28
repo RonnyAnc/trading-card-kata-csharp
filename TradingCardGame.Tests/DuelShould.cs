@@ -15,7 +15,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_a_duelist_joined_when_adding_a_duelist() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, (new NullDuelist(), new NullDuelist()));
+            var duel = Duel.Rebuild(duelId, new NullDuelist(), new NullDuelist());
 
             const string duelistId = "aDuelist";
             duel.AddDuelist(duelistId);
@@ -27,7 +27,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_an_all_duelists_joined_when_both_a_duelist() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, (new Duelist("firstDuelist"), new NullDuelist()));
+            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), new NullDuelist());
             
             const string secondDuelist = "secondDuelist";
             duel.AddDuelist(secondDuelist);
@@ -39,7 +39,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_a_duel_started_when_starting_a_duel() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, (new Duelist("firstDuelist"), new Duelist("firstDuelist")));
+            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), new Duelist("firstDuelist"));
             
             duel.Start();
 

@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 namespace TradingCardGame {
     public class Duel {
         private readonly string id;
-        private readonly string firstDuelist;
-        private readonly string secondDuelist;
         private readonly List<DomainEvent> events = new List<DomainEvent>();
         private List<string> duelists = new List<string>();
 
@@ -13,9 +11,8 @@ namespace TradingCardGame {
             this.id = id;
         }
 
-        private Duel(string id, (DuelistPersistanceContract, DuelistPersistanceContract) duelists) {
+        private Duel(string id, DuelistPersistanceContract first, DuelistPersistanceContract second) {
             this.id = id;
-            var (first, second) = duelists;
             if (!first.IsNull)
                 this.duelists.Add(first.Id);
             if (!second.IsNull)
@@ -30,8 +27,8 @@ namespace TradingCardGame {
             return duel;
         }
 
-        public static Duel Rebuild(string id, (DuelistPersistanceContract, DuelistPersistanceContract) duelists) {
-            return new Duel(id, duelists);
+        public static Duel Rebuild(string id, DuelistPersistanceContract firstDuelist, DuelistPersistanceContract secondDuelist) {
+            return new Duel(id, firstDuelist, secondDuelist);
         }
 
         public void AddDuelist(string duelistId) {
