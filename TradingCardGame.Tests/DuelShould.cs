@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using LanguageExt;
 using NUnit.Framework;
 
 namespace TradingCardGame.Tests {
@@ -15,7 +16,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_a_duelist_joined_when_adding_a_duelist() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new NullDuelist(), new NullDuelist());
+            var duel = Duel.Rebuild(duelId, Option<DuelistState>.None, Option<DuelistState>.None);
 
             const string duelistId = "aDuelist";
             duel.AddDuelist(duelistId);
@@ -27,7 +28,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_an_all_duelists_joined_when_both_a_duelist() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), new NullDuelist());
+            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), Option<DuelistState>.None);
             
             const string secondDuelist = "secondDuelist";
             duel.AddDuelist(secondDuelist);
@@ -48,17 +49,11 @@ namespace TradingCardGame.Tests {
         }
     }
 
-    internal class Duelist : DuelistPersistanceContract {
+    internal class Duelist : DuelistState {
         public string Id { get; }
-        public bool IsNull { get; }
 
         public Duelist(string id) {
             Id = id;
         }
-    }
-
-    internal class NullDuelist : DuelistPersistanceContract {
-        public string Id { get; }
-        public bool IsNull { get; } = true;
     }
 }

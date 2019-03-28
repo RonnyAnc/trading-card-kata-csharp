@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using LanguageExt;
 
 namespace TradingCardGame {
     public class Duel {
@@ -11,12 +12,10 @@ namespace TradingCardGame {
             this.id = id;
         }
 
-        private Duel(string id, DuelistPersistanceContract first, DuelistPersistanceContract second) {
+        private Duel(string id, Option<DuelistState> first, Option<DuelistState> second) {
             this.id = id;
-            if (!first.IsNull)
-                this.duelists.Add(first.Id);
-            if (!second.IsNull)
-                this.duelists.Add(second.Id);
+            first.IfSome(duelist => duelists.Add(duelist.Id));
+            second.IfSome(duelist => duelists.Add(duelist.Id));
         }
 
         public ReadOnlyCollection<DomainEvent> Events => this.events.AsReadOnly();
@@ -27,7 +26,7 @@ namespace TradingCardGame {
             return duel;
         }
 
-        public static Duel Rebuild(string id, DuelistPersistanceContract firstDuelist, DuelistPersistanceContract secondDuelist) {
+        public static Duel Rebuild(string id, Option<DuelistState> firstDuelist, Option<DuelistState> secondDuelist) {
             return new Duel(id, firstDuelist, secondDuelist);
         }
 
@@ -43,8 +42,7 @@ namespace TradingCardGame {
         }
     }
 
-    public interface DuelistPersistanceContract {
+    public interface DuelistState {
         string Id { get; }
-        bool IsNull { get; }
     }
 }
