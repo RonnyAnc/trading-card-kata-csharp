@@ -1,27 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using LanguageExt;
 
 namespace TradingCardGame {
     public class Duel {
         private readonly string id;
         private readonly List<DomainEvent> events = new List<DomainEvent>();
-        private List<string> duelists = new List<string>();
-
-        private Duel(string id) {
-            this.id = id;
-        }
+        private (Option<string> first, Option<string> second) duelists = (Option<string>.None, Option<string>.None);
 
         private Duel(string id, Option<DuelistState> first, Option<DuelistState> second) {
             this.id = id;
-            first.IfSome(duelist => duelists.Add(duelist.Id));
-            second.IfSome(duelist => duelists.Add(duelist.Id));
+            duelists = (GetDuelistFrom(first), GetDuelistFrom(second));
+        }
+
+        private static Option<string> GetDuelistFrom(Option<DuelistState> first) {
+            return first.BiBind(
+                duelist => duelist.Id, 
+                () => Option<string>.None);
         }
 
         public ReadOnlyCollection<DomainEvent> Events => this.events.AsReadOnly();
 
         public static Duel Call(string id) {
-            var duel = new Duel(id);
+            var duel = new Duel(
+                id, 
+                Option<DuelistState>.None, 
+                Option<DuelistState>.None);
             duel.events.Add(new DuelCalled(id));
             return duel;
         }
@@ -31,9 +36,11 @@ namespace TradingCardGame {
         }
 
         public void AddDuelist(string duelistId) {
-            duelists.Add(duelistId);
+            duelists.first.IfNone(duelistId);
+            if (duelists.first.IsSome)
+                duelists.second.IfNone(duelistId);
             events.Add(new DuelistJoined(id, duelistId));
-            if (duelists.Count == 2) 
+            if (duelists.first.IsSome && duelists.second.IsSome) 
                 events.Add(new AllDuelistsJoined(id));
         }
 
