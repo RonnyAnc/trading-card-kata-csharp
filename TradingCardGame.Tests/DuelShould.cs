@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Castle.DynamicProxy.Generators.Emitters;
 using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
@@ -51,15 +52,24 @@ namespace TradingCardGame.Tests {
             duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(duelId, "firstDuelist")));
         }
 
-        [Test]
-        public void prepare_mana_slot_set_when_setting_mana_slots() {
+        [TestCase("firstDuelist")]
+        [TestCase("secondDuelist")]
+        public void prepare_mana_slot_set_when_setting_mana_slots_for_first_duelist(string currentDuelist) {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), new Duelist("secondDuelist", 0));
+            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), new Duelist("secondDuelist", 0), new Turn(currentDuelist));
 
             duel.SetManaSlots();
 
             duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, "firstDuelist", 1)));
+            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, currentDuelist, 1)));
+        }
+    }
+
+    internal class Turn : TurnState {
+        public string DuelistId { get; }
+
+        public Turn(string duelistId) {
+            DuelistId = duelistId;
         }
     }
 
