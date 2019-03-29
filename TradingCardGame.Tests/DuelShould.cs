@@ -26,7 +26,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_an_all_duelists_joined_when_both_a_duelist() {
+        public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
             const string duelId = "anyId";
             var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), Option<DuelistState>.None);
             

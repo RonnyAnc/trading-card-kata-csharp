@@ -7,11 +7,13 @@ namespace TradingCardGame {
     public class Duel {
         private readonly string id;
         private readonly List<DomainEvent> events = new List<DomainEvent>();
-        private (Option<string> first, Option<string> second) duelists = (Option<string>.None, Option<string>.None);
+        private Option<string> first = Option<string>.None;
+        private Option<string> second = Option<string>.None;
 
         private Duel(string id, Option<DuelistState> first, Option<DuelistState> second) {
             this.id = id;
-            duelists = (GetDuelistFrom(first), GetDuelistFrom(second));
+            this.first = GetDuelistFrom(first);
+            this.second = GetDuelistFrom(second);
         }
 
         private static Option<string> GetDuelistFrom(Option<DuelistState> first) {
@@ -36,11 +38,12 @@ namespace TradingCardGame {
         }
 
         public void AddDuelist(string duelistId) {
-            duelists.first.IfNone(duelistId);
-            if (duelists.first.IsSome)
-                duelists.second.IfNone(duelistId);
+            first.IfSome(_ => second = second.IfNone(duelistId));
+            first = first.IfNone(duelistId);
+
             events.Add(new DuelistJoined(id, duelistId));
-            if (duelists.first.IsSome && duelists.second.IsSome) 
+
+            if (first.IsSome && second.IsSome) 
                 events.Add(new AllDuelistsJoined(id));
         }
 
