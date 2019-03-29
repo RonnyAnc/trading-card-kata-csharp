@@ -38,11 +38,10 @@ namespace TradingCardGame {
         }
 
         public void AddDuelist(string duelistId) {
-            first.IfSome(_ => second = second.IfNone(duelistId));
-            first = first.IfNone(duelistId);
-
+            first.BiIter(
+                _ => second = second.IfNone(duelistId),
+                () => first = first.IfNone(duelistId));           
             events.Add(new DuelistJoined(id, duelistId));
-
             if (first.IsSome && second.IsSome) 
                 events.Add(new AllDuelistsJoined(id));
         }
