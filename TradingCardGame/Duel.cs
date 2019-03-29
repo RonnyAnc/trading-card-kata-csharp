@@ -50,9 +50,14 @@ namespace TradingCardGame {
             events.Add(new DuelStarted(id));
             first.IfSome(firstId => events.Add(new DuelistTurnStarted(id, firstId)));
         }
+
+        public void SetManaSlots() {
+            first.IfSome(firstId => events.Add(new ManaSlotSet(id, firstId, 1)));
+        }
     }
 
     public interface DuelistState {
         string Id { get; }
+        int ManaSlots { get; }
     }
 }
