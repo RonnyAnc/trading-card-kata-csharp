@@ -1,5 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using LanguageExt;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace TradingCardGame.Tests {
@@ -29,7 +31,7 @@ namespace TradingCardGame.Tests {
         public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
             const string duelId = "anyId";
             var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), Option<DuelistState>.None);
-            
+
             const string secondDuelist = "secondDuelist";
             duel.AddDuelist(secondDuelist);
 
@@ -40,12 +42,13 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_a_duel_started_when_starting_a_duel() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), new Duelist("firstDuelist"));
-            
+            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist"), new Duelist("secondDuelist"));
+
             duel.Start();
 
-            duel.Events.Should().HaveCount(1);
+            duel.Events.Should().HaveCount(2);
             duel.Events.Should().Contain(x => x.Equals(new DuelStarted(duelId)));
+            duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(duelId, "firstDuelist")));
         }
     }
 

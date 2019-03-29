@@ -48,6 +48,7 @@ namespace TradingCardGame {
 
         public void Start() {
             events.Add(new DuelStarted(id));
+            first.IfSome(firstId => events.Add(new DuelistTurnStarted(id, firstId)));
         }
     }
 
