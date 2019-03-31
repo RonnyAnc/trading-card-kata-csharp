@@ -3,14 +3,11 @@ using System.Collections.ObjectModel;
 using LanguageExt;
 
 namespace TradingCardGame {
-    public class Duel {
+    public class Duel : AggregateRoot {
         private readonly string id;
-        private readonly List<DomainEvent> events = new List<DomainEvent>();
         private readonly string turn;
         private readonly string first;
         private readonly string second;
-
-        public ReadOnlyCollection<DomainEvent> Events => this.events.AsReadOnly();
 
         private Duel(string id, string firstDuelist, string secondDuelist, string turn) {
             this.id = id;
@@ -25,13 +22,13 @@ namespace TradingCardGame {
 
         public static Duel Start(string id, string firstDuelist, string secondDuelist) {
             var duel = new Duel(id, firstDuelist, secondDuelist, firstDuelist);
-            duel.events.Add(new DuelStarted(id));
-            duel.events.Add(new DuelistTurnStarted(id, firstDuelist));
+            duel.DomainEvents.Add(new DuelStarted(id));
+            duel.DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist));
             return duel;
         }
 
         public void SetManaSlots() {
-            events.Add(new ManaSlotSet(id, turn, 1));
+            DomainEvents.Add(new ManaSlotSet(id, turn, 1));
         }
     }
 
