@@ -16,10 +16,6 @@ namespace TradingCardGame {
             this.turn = turn;
         }
 
-        public static Duel Rebuild(string id, DuelistState firstDuelist, DuelistState secondDuelist, TurnState currentTurn) {
-            return new Duel(id, firstDuelist.Id, secondDuelist.Id, currentTurn.DuelistId);
-        }
-
         public static Duel Start(string id, string firstDuelist, string secondDuelist) {
             var duel = new Duel(id, firstDuelist, secondDuelist, firstDuelist);
             duel.Start();
