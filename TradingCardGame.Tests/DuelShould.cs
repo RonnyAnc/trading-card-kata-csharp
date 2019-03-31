@@ -10,21 +10,25 @@ namespace TradingCardGame.Tests {
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
 
-            duel.Events.Should().HaveCount(2);
             duel.Events.Should().Contain(x => x.Equals(new DuelStarted(duelId)));
+        }
+
+        [Test]
+        public void prepare_a_duelist_turn_started_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
             duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(duelId, "firstDuelist")));
         }
 
-        [TestCase("firstDuelist")]
-        [TestCase("secondDuelist")]
-        public void prepare_mana_slot_set_when_setting_mana_slots_for_current_duelist(string currentDuelist) {
+        [Test]
+        public void prepare_mana_slot_set_when_setting_mana_slots_when_starting_a_duel() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), new Duelist("secondDuelist", 0), new Turn(currentDuelist));
 
-            duel.SetManaSlots();
-
-            duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, currentDuelist, 1)));
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+            
+            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, "firstDuelist", 1)));
         }
     }
 

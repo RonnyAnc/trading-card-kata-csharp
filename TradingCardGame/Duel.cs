@@ -6,13 +6,13 @@ namespace TradingCardGame {
     public class Duel : AggregateRoot {
         private readonly string id;
         private readonly string turn;
-        private readonly string first;
-        private readonly string second;
+        private readonly string firstDuelist;
+        private readonly string secondDuelist;
 
         private Duel(string id, string firstDuelist, string secondDuelist, string turn) {
             this.id = id;
-            first = firstDuelist;
-            second = secondDuelist;
+            this.firstDuelist = firstDuelist;
+            this.secondDuelist = secondDuelist;
             this.turn = turn;
         }
 
@@ -22,12 +22,13 @@ namespace TradingCardGame {
 
         public static Duel Start(string id, string firstDuelist, string secondDuelist) {
             var duel = new Duel(id, firstDuelist, secondDuelist, firstDuelist);
-            duel.DomainEvents.Add(new DuelStarted(id));
-            duel.DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist));
+            duel.Start();
             return duel;
         }
 
-        public void SetManaSlots() {
+        private void Start() {
+            DomainEvents.Add(new DuelStarted(id));
+            DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist));
             DomainEvents.Add(new ManaSlotSet(id, turn, 1));
         }
     }
