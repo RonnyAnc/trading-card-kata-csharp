@@ -33,11 +33,20 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
+        public void give_initial_turn_to_first_duelist() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.Turn.DuelistId.Should().Be("firstDuelist");
+        }
+
+        [Test]
         public void prepare_mana_slot_set_when_setting_mana_slots_when_starting_a_duel() {
             const string duelId = "anyId";
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
-            
+
             duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, "firstDuelist", 1)));
         }
     }
