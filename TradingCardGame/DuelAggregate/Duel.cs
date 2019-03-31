@@ -31,6 +31,7 @@ namespace TradingCardGame.DuelAggregate {
 
         private void SetManaSlots() {
             firstDuelist.IncrementManaSlot();
+            firstDuelist.RefillMana();
             DomainEvents.Add(new ManaSlotSet(id, turn.DuelistId, 1));
         }
     }

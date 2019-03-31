@@ -3,8 +3,10 @@
 namespace TradingCardGame.DuelAggregate {
     internal class Duelist : DuelistState {
         private int manaSlots;
+        private int mana;
         public string Id { get; }
         public int ManaSlots => manaSlots;
+        public int Mana => mana;
 
         internal Duelist(string id) {
             Id = id;
@@ -13,6 +15,10 @@ namespace TradingCardGame.DuelAggregate {
 
         internal void IncrementManaSlot() {
             manaSlots = manaSlots + 1;
+        }
+
+        public void RefillMana() {
+            mana = manaSlots;
         }
     }
 }

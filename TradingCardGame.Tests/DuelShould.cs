@@ -61,6 +61,15 @@ namespace TradingCardGame.Tests {
 
             duel.State.FirstDuelist.ManaSlots.Should().Be(1);
         }
+
+        [Test]
+        public void refill_mana_to_first_duelist_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.Mana.Should().Be(1);
+        }
     }
 
     internal class Turn : TurnState {
@@ -74,6 +83,7 @@ namespace TradingCardGame.Tests {
     internal class Duelist : DuelistState {
         public string Id { get; }
         public int ManaSlots { get; }
+        public int Mana { get; }
 
         public Duelist(string id, int manaSlots) {
             Id = id;
