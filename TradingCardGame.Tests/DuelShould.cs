@@ -14,6 +14,16 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
+        public void start_a_duel_with_two_players() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.Id.Should().Be("firstDuelist");
+            duel.State.SecondDuelist.Id.Should().Be("secondDuelist");
+        }
+
+        [Test]
         public void prepare_a_duelist_turn_started_when_starting_a_duel() {
             const string duelId = "anyId";
 

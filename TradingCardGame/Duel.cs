@@ -6,13 +6,15 @@ namespace TradingCardGame {
     public class Duel : AggregateRoot {
         private readonly string id;
         private readonly string turn;
-        private readonly string firstDuelist;
-        private readonly string secondDuelist;
+        private readonly Duelist firstDuelist;
+        private readonly Duelist secondDuelist;
+
+        public DuelState State => new DuelState(firstDuelist, secondDuelist);
 
         private Duel(string id, string firstDuelist, string secondDuelist, string turn) {
             this.id = id;
-            this.firstDuelist = firstDuelist;
-            this.secondDuelist = secondDuelist;
+            this.firstDuelist = new Duelist(firstDuelist);
+            this.secondDuelist = new Duelist(secondDuelist);
             this.turn = turn;
         }
 
@@ -24,8 +26,27 @@ namespace TradingCardGame {
 
         private void Start() {
             DomainEvents.Add(new DuelStarted(id));
-            DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist));
+            DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
             DomainEvents.Add(new ManaSlotSet(id, turn, 1));
+        }
+    }
+
+    internal class Duelist : DuelistState {
+        public string Id { get; }
+        public int ManaSlots { get; }
+
+        public Duelist(string id) {
+            Id = id;
+        }
+    }
+
+    public class DuelState {
+        public DuelistState FirstDuelist { get; }
+        public DuelistState SecondDuelist { get; }
+
+        public DuelState(DuelistState firstDuelist, DuelistState secondDuelist) {
+            FirstDuelist = firstDuelist;
+            SecondDuelist = secondDuelist;
         }
     }
 
