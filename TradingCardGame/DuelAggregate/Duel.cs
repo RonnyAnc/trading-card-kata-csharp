@@ -26,6 +26,11 @@ namespace TradingCardGame.DuelAggregate {
         private void Start() {
             DomainEvents.Add(new DuelStarted(id));
             DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
+            SetManaSlots();
+        }
+
+        private void SetManaSlots() {
+            firstDuelist.IncrementManaSlot();
             DomainEvents.Add(new ManaSlotSet(id, turn.DuelistId, 1));
         }
     }

@@ -54,8 +54,12 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void assing_one_mana_slot_when_starting_a_duel() {
+        public void set_one_mana_slot_to_first_duelist_when_starting_a_duel() {
+            const string duelId = "anyId";
 
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.ManaSlots.Should().Be(1);
         }
     }
 
