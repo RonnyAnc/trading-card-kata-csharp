@@ -70,6 +70,15 @@ namespace TradingCardGame.Tests {
 
             duel.State.FirstDuelist.Mana.Should().Be(1);
         }
+
+        [Test]
+        public void prepare_mana_refilled_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(duelId, "firstDuelist", 1)));
+        }
     }
 
     internal class Turn : TurnState {
