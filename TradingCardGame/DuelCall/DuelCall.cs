@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using LanguageExt;
+﻿using LanguageExt;
+using TradingCardGame.Duel.State;
+using TradingCardGame.DuelCall.Events;
 
-namespace TradingCardGame {
+namespace TradingCardGame.DuelCall {
     public class DuelCall : AggregateRoot {
         private readonly string id;
         private Option<string> first = Option<string>.None;

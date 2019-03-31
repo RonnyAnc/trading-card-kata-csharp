@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Transactions;
-using LanguageExt;
+﻿using TradingCardGame.Duel.Events;
+using TradingCardGame.Duel.State;
 
-namespace TradingCardGame {
+namespace TradingCardGame.Duel {
     public class Duel : AggregateRoot {
         private readonly string id;
         private readonly Turn turn;
@@ -30,39 +28,5 @@ namespace TradingCardGame {
             DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
             DomainEvents.Add(new ManaSlotSet(id, turn.DuelistId, 1));
         }
-    }
-
-    internal class Turn : TurnState {
-        public string DuelistId { get; }
-
-        public Turn(string duelistId) {
-            DuelistId = duelistId;
-        }
-    }
-
-    internal class Duelist : DuelistState {
-        public string Id { get; }
-        public int ManaSlots { get; }
-
-        public Duelist(string id) {
-            Id = id;
-        }
-    }
-
-    public class DuelState {
-        public DuelistState FirstDuelist { get; }
-        public DuelistState SecondDuelist { get; }
-        public TurnState Turn { get; set; }
-
-        public DuelState(DuelistState firstDuelist, DuelistState secondDuelist, TurnState turn) {
-            FirstDuelist = firstDuelist;
-            SecondDuelist = secondDuelist;
-            Turn = turn;
-        }
-    }
-
-    public interface DuelistState {
-        string Id { get; }
-        int ManaSlots { get; }
     }
 }

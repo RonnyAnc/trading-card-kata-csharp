@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TradingCardGame {
+namespace TradingCardGame.Duel.Events {
     public class ManaSlotSet : DomainEvent, IEquatable<ManaSlotSet> {
         public string DuelId { get; }
         public string DuelistId { get; }
