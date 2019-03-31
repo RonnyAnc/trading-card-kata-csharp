@@ -1,6 +1,6 @@
-﻿using TradingCardGame.Duel.State;
+﻿using TradingCardGame.DuelAggregate.State;
 
-namespace TradingCardGame.Duel {
+namespace TradingCardGame.DuelAggregate {
     internal class Turn : TurnState {
         public string DuelistId { get; }
 

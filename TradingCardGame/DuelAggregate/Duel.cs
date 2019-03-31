@@ -1,7 +1,7 @@
-﻿using TradingCardGame.Duel.Events;
-using TradingCardGame.Duel.State;
+﻿using TradingCardGame.DuelAggregate.Events;
+using TradingCardGame.DuelAggregate.State;
 
-namespace TradingCardGame.Duel {
+namespace TradingCardGame.DuelAggregate {
     public class Duel : AggregateRoot {
         private readonly string id;
         private readonly Turn turn;

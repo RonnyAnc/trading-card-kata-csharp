@@ -1,8 +1,8 @@
 ﻿using LanguageExt;
-using TradingCardGame.Duel.State;
-using TradingCardGame.DuelCall.Events;
+using TradingCardGame.DuelAggregate.State;
+using TradingCardGame.DuelCallAggregate.Events;
 
-namespace TradingCardGame.DuelCall {
+namespace TradingCardGame.DuelCallAggregate {
     public class DuelCall : AggregateRoot {
         private readonly string id;
         private Option<string> first = Option<string>.None;

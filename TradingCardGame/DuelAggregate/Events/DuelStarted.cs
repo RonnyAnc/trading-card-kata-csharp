@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TradingCardGame.Duel.Events {
+namespace TradingCardGame.DuelAggregate.Events {
     public class DuelStarted : DomainEvent, IEquatable<DuelStarted> {
         public string DuelId { get; }
 

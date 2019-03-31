@@ -1,4 +1,4 @@
-﻿namespace TradingCardGame.Duel.State {
+﻿namespace TradingCardGame.DuelAggregate.State {
     public class DuelState {
         public DuelistState FirstDuelist { get; }
         public DuelistState SecondDuelist { get; }
