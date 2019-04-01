@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 
 namespace TradingCardGame.DuelAggregate.State {
-    public interface DeckState {
-        List<CardState> Cards { get; }
+    public class DeckState {
+        public List<CardState> Cards { get; }
+
+        public DeckState(List<CardState> cards) {
+            Cards = cards;
+        }
     }
 }

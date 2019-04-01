@@ -85,23 +85,22 @@ namespace TradingCardGame.Tests {
         [Test]
         public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
             const string duelId = "anyId";
-            var firstDuelist = new DuelistState("firstDuelist", 0, new TestDeck());
-            var secondDuelist = new DuelistState("firstDuelist", 0, new TestDeck());
+            var firstDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
+            var secondDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
 
             var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
 
             duel.State.FirstDuelist.Deck.Cards.Should().HaveCount(17);
             duel.State.FirstDuelist.Hand.Should().HaveCount(3);
         }
-    }
 
-    public class TestDeck : DeckState {
-        public List<CardState> Cards { get; } = new List<CardState>();
-
-        public TestDeck() {
-            for (var i = 0; i < 20; i++) {
-                Cards.Add(new Card(i, i));
+        private List<CardState> GetCardsForDeck() {
+            var cards = new List<CardState>();
+            for (int i = 0; i < 20; i++) {
+                cards.Add(new Card(i, i));
             }
+
+            return cards;
         }
     }
 
