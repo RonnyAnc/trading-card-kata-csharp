@@ -29,10 +29,10 @@ namespace TradingCardGame.DuelAggregate {
         }
 
         public void DrawCard() {
-            var oldDeckCards = new Lst<CardState>(Deck.Cards);
-            var nextDeckCards = oldDeckCards.RemoveRange(0, 3).ToList();
-            Deck = new DeckState(nextDeckCards);
-            Hand = oldDeckCards.Except(nextDeckCards).ToList();
+            // TODO: deck shouldn't be a DeckState but only a Deck
+            var card = Deck.Cards.First();
+            Deck.Cards.Remove(card);
+            Hand.Add(card);
         }
     }
 

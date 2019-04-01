@@ -59,6 +59,8 @@ namespace TradingCardGame.DuelAggregate {
 
         private void DrawInitialHand() {   
             firstDuelist.DrawCard();
+            firstDuelist.DrawCard();
+            firstDuelist.DrawCard();
         }
     }
 
