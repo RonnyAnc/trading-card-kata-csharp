@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using LanguageExt;
 using NUnit.Framework;
@@ -85,12 +86,17 @@ namespace TradingCardGame.Tests {
         [Test]
         public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
             const string duelId = "anyId";
-            var firstDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
+            var firstDuelistDeck = new DeckState(GetCardsForDeck());
+            var firstDuelist = new DuelistState("firstDuelist", 0, firstDuelistDeck);
             var secondDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
 
             var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
 
+            var expectedDeck = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Hand);
+            duel.State.FirstDuelist.Deck.Cards.Should().BeEquivalentTo(expectedDeck);
             duel.State.FirstDuelist.Deck.Cards.Should().HaveCount(17);
+            var expectedHand = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Deck.Cards);
+            duel.State.FirstDuelist.Hand.Should().BeEquivalentTo(expectedHand);
             duel.State.FirstDuelist.Hand.Should().HaveCount(3);
         }
 

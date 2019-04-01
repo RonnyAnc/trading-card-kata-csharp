@@ -10,12 +10,12 @@ namespace TradingCardGame.DuelAggregate {
         public string Id { get; }
         public int ManaSlots => manaSlots.Count;
         public int Mana => manaSlots.Filter(slot => !slot.IsEmpty).Count();
-        public DeckState Deck { get; }
-        public List<CardState> Hand { get; }
+        public DeckState Deck { get; private set; }
+        public List<CardState> Hand { get; private set; }
 
         internal Duelist(string id, DeckState deck = null) {
             Id = id;
-            Deck = deck;
+            Deck = deck is null ? null : new DeckState(new List<CardState>(deck?.Cards));
             manaSlots = new List<ManaSlot>();
             Hand = new List<CardState>();
         }
@@ -26,6 +26,13 @@ namespace TradingCardGame.DuelAggregate {
 
         internal void RefillMana() {
             manaSlots = manaSlots.Map(_ => ManaSlot.Filled()).ToList();
+        }
+
+        public void DrawCard() {
+            var oldDeckCards = new Lst<CardState>(Deck.Cards);
+            var nextDeckCards = oldDeckCards.RemoveRange(0, 3).ToList();
+            Deck = new DeckState(nextDeckCards);
+            Hand = oldDeckCards.Except(nextDeckCards).ToList();
         }
     }
 

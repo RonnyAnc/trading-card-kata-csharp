@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using LanguageExt;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
 
@@ -56,10 +57,8 @@ namespace TradingCardGame.DuelAggregate {
             return duel;
         }
 
-        private void DrawInitialHand() {
-            // TODO: feature envy
-            firstDuelist.Deck.Cards.RemoveRange(0, 3);
-            firstDuelist.Hand.AddRange(new List<CardState> {new CardState(1,1), new CardState(1, 1) , new CardState(1, 1) });
+        private void DrawInitialHand() {   
+            firstDuelist.DrawCard();
         }
     }
 
