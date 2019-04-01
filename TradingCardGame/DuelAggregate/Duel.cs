@@ -59,11 +59,11 @@ namespace TradingCardGame.DuelAggregate {
         private void DrawInitialHand() {
             // TODO: feature envy
             firstDuelist.Deck.Cards.RemoveRange(0, 3);
-            firstDuelist.Hand.AddRange(new List<CardState> {new Card(1,1), new Card(1, 1) , new Card(1, 1) });
+            firstDuelist.Hand.AddRange(new List<CardState> {new CardState(1,1), new CardState(1, 1) , new CardState(1, 1) });
         }
     }
 
-    internal class Card : CardState {
+    internal class Card {
         public int ManaCost { get; }
         public int Damage { get; }
         public Card(int manaCost, int damage) {

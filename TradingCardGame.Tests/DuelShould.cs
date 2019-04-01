@@ -97,20 +97,10 @@ namespace TradingCardGame.Tests {
         private List<CardState> GetCardsForDeck() {
             var cards = new List<CardState>();
             for (int i = 0; i < 20; i++) {
-                cards.Add(new Card(i, i));
+                cards.Add(new CardState(i, i));
             }
 
             return cards;
-        }
-    }
-
-    public class Card : CardState {
-        public int ManaCost { get; }
-        public int Damage { get; }
-
-        public Card(int manaCost, int damage) {
-            ManaCost = manaCost;
-            Damage = damage;
         }
     }
 }
