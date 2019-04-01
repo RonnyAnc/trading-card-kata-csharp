@@ -10,7 +10,7 @@ namespace TradingCardGame.DuelAggregate {
         private readonly Duelist firstDuelist;
         private readonly Duelist secondDuelist;
 
-        public DuelState State => new DuelState(firstDuelist, secondDuelist, turn);
+        public DuelState State => new DuelState(DuelistState.From(firstDuelist), DuelistState.From(secondDuelist), turn);
 
         private Duel(string id, string firstDuelist, string secondDuelist, string turn) {
             this.id = id;

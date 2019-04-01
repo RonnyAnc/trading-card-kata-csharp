@@ -85,8 +85,8 @@ namespace TradingCardGame.Tests {
         [Test]
         public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
             const string duelId = "anyId";
-            var firstDuelist = new Duelist("firstDuelist", 0, new TestDeck());
-            var secondDuelist = new Duelist("firstDuelist", 0, new TestDeck());
+            var firstDuelist = new DuelistState("firstDuelist", 0, new TestDeck());
+            var secondDuelist = new DuelistState("firstDuelist", 0, new TestDeck());
 
             var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
 
@@ -112,20 +112,6 @@ namespace TradingCardGame.Tests {
         public Card(int manaCost, int damage) {
             ManaCost = manaCost;
             Damage = damage;
-        }
-    }
-
-    internal class Duelist : DuelistState {
-        public string Id { get; }
-        public int ManaSlots { get; }
-        public int Mana { get; }
-        public DeckState Deck { get; }
-        public List<CardState> Hand { get; }
-
-        public Duelist(string id, int manaSlots, DeckState deck) {
-            Id = id;
-            ManaSlots = manaSlots;
-            Deck = deck;
         }
     }
 }

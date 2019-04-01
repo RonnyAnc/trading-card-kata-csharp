@@ -4,7 +4,7 @@ using LanguageExt;
 using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.DuelAggregate {
-    internal class Duelist : DuelistState {
+    internal class Duelist {
         private List<ManaSlot> manaSlots;
         private int mana;
         public string Id { get; }

@@ -34,7 +34,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
             const string duelId = "anyId";
-            var duelCall = DuelCall.Restore(duelId, new Duelist("firstDuelist", 0, new TestDeck()), Option<DuelistState>.None);
+            var duelCall = DuelCall.Restore(duelId, new DuelistState("firstDuelist", 0, new TestDeck()), Option<DuelistState>.None);
 
             const string secondDuelist = "secondDuelist";
             duelCall.AddDuelist(secondDuelist);
