@@ -10,10 +10,14 @@ namespace TradingCardGame.DuelAggregate {
         public string Id { get; }
         public int ManaSlots => manaSlots.Count;
         public int Mana => manaSlots.Filter(slot => !slot.IsEmpty).Count();
+        public DeckState Deck { get; }
+        public List<CardState> Hand { get; }
 
-        internal Duelist(string id) {
+        internal Duelist(string id, DeckState deck = null) {
             Id = id;
+            Deck = deck;
             manaSlots = new List<ManaSlot>();
+            Hand = new List<CardState>();
         }
 
         internal void IncrementManaSlot() {

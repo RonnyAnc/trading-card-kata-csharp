@@ -1,9 +1,11 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using LanguageExt;
 using NUnit.Framework;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
+using List = LanguageExt.List;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {
@@ -79,16 +81,51 @@ namespace TradingCardGame.Tests {
 
             duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(duelId, "firstDuelist", 1)));
         }
+
+        [Test]
+        public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
+            const string duelId = "anyId";
+            var firstDuelist = new Duelist("firstDuelist", 0, new TestDeck());
+            var secondDuelist = new Duelist("firstDuelist", 0, new TestDeck());
+
+            var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
+
+            duel.State.FirstDuelist.Deck.Cards.Should().HaveCount(17);
+            duel.State.FirstDuelist.Hand.Should().HaveCount(3);
+        }
+    }
+
+    public class TestDeck : DeckState {
+        public List<CardState> Cards { get; } = new List<CardState>();
+
+        public TestDeck() {
+            for (var i = 0; i < 20; i++) {
+                Cards.Add(new Card(i, i));
+            }
+        }
+    }
+
+    public class Card : CardState {
+        public int ManaCost { get; }
+        public int Damage { get; }
+
+        public Card(int manaCost, int damage) {
+            ManaCost = manaCost;
+            Damage = damage;
+        }
     }
 
     internal class Duelist : DuelistState {
         public string Id { get; }
         public int ManaSlots { get; }
         public int Mana { get; }
+        public DeckState Deck { get; }
+        public List<CardState> Hand { get; }
 
-        public Duelist(string id, int manaSlots) {
+        public Duelist(string id, int manaSlots, DeckState deck) {
             Id = id;
             ManaSlots = manaSlots;
+            Deck = deck;
         }
     }
 }
