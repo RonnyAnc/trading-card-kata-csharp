@@ -1,67 +1,83 @@
-﻿using System.Linq;
-using Castle.DynamicProxy.Generators.Emitters;
-using FluentAssertions;
+﻿using FluentAssertions;
 using LanguageExt;
-using NSubstitute;
 using NUnit.Framework;
+using TradingCardGame.DuelAggregate;
+using TradingCardGame.DuelAggregate.Events;
+using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {
         [Test]
-        public void prepare_a_duel_called_event_when_new_duel_is_created() {
-            const string duelId = "anyId";
-            var duel = Duel.Call(duelId);
-
-            duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new DuelCalled(duelId)));
-        }
-
-        [Test]
-        public void prepare_a_duelist_joined_when_adding_a_duelist() {
-            const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, Option<DuelistState>.None, Option<DuelistState>.None);
-
-            const string duelistId = "aDuelist";
-            duel.AddDuelist(duelistId);
-
-            duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new DuelistJoined(duelId, duelistId)));
-        }
-
-        [Test]
-        public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
-            const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), Option<DuelistState>.None);
-
-            const string secondDuelist = "secondDuelist";
-            duel.AddDuelist(secondDuelist);
-
-            duel.Events.Should().HaveCount(2);
-            duel.Events.Should().Contain(x => x.Equals(new AllDuelistsJoined(duelId)));
-        }
-
-        [Test]
         public void prepare_a_duel_started_when_starting_a_duel() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), new Duelist("secondDuelist", 0));
 
-            duel.Start();
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
 
-            duel.Events.Should().HaveCount(2);
             duel.Events.Should().Contain(x => x.Equals(new DuelStarted(duelId)));
+        }
+
+        [Test]
+        public void start_a_duel_with_two_players() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.Id.Should().Be("firstDuelist");
+            duel.State.SecondDuelist.Id.Should().Be("secondDuelist");
+        }
+
+        [Test]
+        public void prepare_a_duelist_turn_started_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
             duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(duelId, "firstDuelist")));
         }
 
-        [TestCase("firstDuelist")]
-        [TestCase("secondDuelist")]
-        public void prepare_mana_slot_set_when_setting_mana_slots_for_first_duelist(string currentDuelist) {
+        [Test]
+        public void give_initial_turn_to_first_duelist() {
             const string duelId = "anyId";
-            var duel = Duel.Rebuild(duelId, new Duelist("firstDuelist", 0), new Duelist("secondDuelist", 0), new Turn(currentDuelist));
 
-            duel.SetManaSlots();
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
 
-            duel.Events.Should().HaveCount(1);
-            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, currentDuelist, 1)));
+            duel.State.Turn.DuelistId.Should().Be("firstDuelist");
+        }
+
+        [Test]
+        public void prepare_mana_slot_set_when_setting_mana_slots_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, "firstDuelist", 1)));
+        }
+
+        [Test]
+        public void set_one_mana_slot_to_first_duelist_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.ManaSlots.Should().Be(1);
+        }
+
+        [Test]
+        public void refill_mana_to_first_duelist_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.State.FirstDuelist.Mana.Should().Be(1);
+        }
+
+        [Test]
+        public void prepare_mana_refilled_when_starting_a_duel() {
+            const string duelId = "anyId";
+
+            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+
+            duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(duelId, "firstDuelist", 1)));
         }
     }
 
@@ -76,6 +92,7 @@ namespace TradingCardGame.Tests {
     internal class Duelist : DuelistState {
         public string Id { get; }
         public int ManaSlots { get; }
+        public int Mana { get; }
 
         public Duelist(string id, int manaSlots) {
             Id = id;
