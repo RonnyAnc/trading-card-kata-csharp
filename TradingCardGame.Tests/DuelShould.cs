@@ -81,14 +81,6 @@ namespace TradingCardGame.Tests {
         }
     }
 
-    internal class Turn : TurnState {
-        public string DuelistId { get; }
-
-        public Turn(string duelistId) {
-            DuelistId = duelistId;
-        }
-    }
-
     internal class Duelist : DuelistState {
         public string Id { get; }
         public int ManaSlots { get; }
