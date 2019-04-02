@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using LanguageExt;
 using NUnit.Framework;
 using TradingCardGame.DuelAggregate.State;
 using TradingCardGame.DuelCallAggregate;
 using TradingCardGame.DuelCallAggregate.Events;
-using List = LanguageExt.List;
 
 namespace TradingCardGame.Tests {
     public class DuelCallShould {
@@ -34,7 +33,7 @@ namespace TradingCardGame.Tests {
         [Test]
         public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
             const string duelId = "anyId";
-            var duelCall = DuelCall.Restore(duelId, new Duelist("firstDuelist", 0), Option<DuelistState>.None);
+            var duelCall = DuelCall.Restore(duelId, new DuelistState("firstDuelist", 0, new DeckState(new List<CardState>())), Option<DuelistState>.None);
 
             const string secondDuelist = "secondDuelist";
             duelCall.AddDuelist(secondDuelist);

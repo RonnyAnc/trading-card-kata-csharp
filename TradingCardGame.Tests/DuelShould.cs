@@ -1,9 +1,12 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
 using LanguageExt;
 using NUnit.Framework;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
+using List = LanguageExt.List;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {
@@ -79,24 +82,31 @@ namespace TradingCardGame.Tests {
 
             duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(duelId, "firstDuelist", 1)));
         }
-    }
 
-    internal class Turn : TurnState {
-        public string DuelistId { get; }
+        [Test]
+        public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
+            const string duelId = "anyId";
+            var firstDuelistDeck = new DeckState(GetCardsForDeck());
+            var firstDuelist = new DuelistState("firstDuelist", 0, firstDuelistDeck);
+            var secondDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
 
-        public Turn(string duelistId) {
-            DuelistId = duelistId;
+            var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
+
+            var expectedDeck = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Hand);
+            duel.State.FirstDuelist.Deck.Cards.Should().BeEquivalentTo(expectedDeck);
+            duel.State.FirstDuelist.Deck.Cards.Should().HaveCount(17);
+            var expectedHand = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Deck.Cards);
+            duel.State.FirstDuelist.Hand.Should().BeEquivalentTo(expectedHand);
+            duel.State.FirstDuelist.Hand.Should().HaveCount(3);
         }
-    }
 
-    internal class Duelist : DuelistState {
-        public string Id { get; }
-        public int ManaSlots { get; }
-        public int Mana { get; }
+        private List<CardState> GetCardsForDeck() {
+            var cards = new List<CardState>();
+            for (int i = 0; i < 20; i++) {
+                cards.Add(new CardState(i, i));
+            }
 
-        public Duelist(string id, int manaSlots) {
-            Id = id;
-            ManaSlots = manaSlots;
+            return cards;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace TradingCardGame.DuelCallAggregate {
             return duelCall;
         }
 
+        // TODO: remove DuelistState from here
         public static DuelCall Restore(string id, Option<DuelistState> duelistOne, Option<DuelistState> duelistTwo) {
             return new DuelCall(id, duelistOne, duelistTwo);
         }
