@@ -11,7 +11,7 @@ using List = LanguageExt.List;
 namespace TradingCardGame.Tests {
     public class DuelShould {
         [Test]
-        public void prepare_a_duel_started_when_starting_a_duel() {
+        public void prepare_a_duel_started_event_when_starting_a_duel() {
             const string duelId = "anyId";
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
@@ -30,7 +30,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_a_duelist_turn_started_when_starting_a_duel() {
+        public void prepare_a_duelist_turn_started_event_when_starting_a_duel() {
             const string duelId = "anyId";
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
@@ -48,7 +48,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_mana_slot_set_when_setting_mana_slots_when_starting_a_duel() {
+        public void prepare_mana_slot_set_event_when_setting_mana_slots_when_starting_a_duel() {
             const string duelId = "anyId";
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
@@ -75,7 +75,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_mana_refilled_when_starting_a_duel() {
+        public void prepare_mana_refilled_event_when_starting_a_duel() {
             const string duelId = "anyId";
 
             var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");

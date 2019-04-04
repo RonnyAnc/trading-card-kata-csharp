@@ -5,15 +5,15 @@ using TradingCardGame.DuelCallAggregate.Events;
 namespace TradingCardGame.DuelCallAggregate {
     public class DuelCall : AggregateRoot {
         private readonly string id;
-        private Option<string> first = Option<string>.None;
-        private Option<string> second = Option<string>.None;
+        private Either<FreeSpot, string> spotOne = new FreeSpot();
+        private Either<FreeSpot, string> spotTwo = new FreeSpot();
 
-        private DuelCall(string id, Option<DuelistState> duelistOne, Option<DuelistState> duelistTwo) {
+        private DuelCall(string id, Either<FreeSpot, string> duelistOne, Either<FreeSpot, string> duelistTwo)
+        {
             this.id = id;
-            first = GetDuelistFrom(duelistOne);
-            second = GetDuelistFrom(duelistTwo);
+            duelistOne.Map(duelistId => spotOne = duelistId);
+            duelistTwo.Map(duelistId => spotOne = duelistId);
         }
-
 
         private static Option<string> GetDuelistFrom(Option<DuelistState> first) {
             return first.BiBind(
@@ -23,24 +23,25 @@ namespace TradingCardGame.DuelCallAggregate {
 
         public static DuelCall Create(string id) {
             var duelCall = new DuelCall(id,
-                Option<DuelistState>.None,
-                Option<DuelistState>.None);
+                new FreeSpot(),
+                new FreeSpot());
             duelCall.DomainEvents.Add(new DuelCalled(id));
             return duelCall;
         }
 
         // TODO: remove DuelistState from here
-        public static DuelCall Restore(string id, Option<DuelistState> duelistOne, Option<DuelistState> duelistTwo) {
+        public static DuelCall Restore(string id, Either<FreeSpot, string> duelistOne, Either<FreeSpot, string> duelistTwo) {
             return new DuelCall(id, duelistOne, duelistTwo);
         }
 
         public void AddDuelist(string duelistId) {
-            first.BiIter(
-                _ => second = second.IfNone(duelistId),
-                () => first = first.IfNone(duelistId));
+            spotOne.Map(_ => spotTwo = duelistId)
+                .MapLeft(_ => spotOne = duelistId);
             DomainEvents.Add(new DuelistJoined(id, duelistId));
-            if (first.IsSome && second.IsSome)
+            if (spotOne.IsRight && spotTwo.IsRight)
                 DomainEvents.Add(new AllDuelistsJoined(id));
         }
     }
+
+    public class FreeSpot { }
 }

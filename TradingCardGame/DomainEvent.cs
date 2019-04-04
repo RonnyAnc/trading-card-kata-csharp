@@ -1,3 +1,5 @@
 ﻿namespace TradingCardGame {
-    public interface DomainEvent { }
+    // TODO add OccuredOn and Id
+    public interface DomainEvent {
+    }
 }
