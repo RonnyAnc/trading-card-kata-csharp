@@ -88,7 +88,7 @@ namespace TradingCardGame.Tests {
             const string duelId = "anyId";
             var firstDuelistDeck = new DeckState(GetCardsForDeck());
             var firstDuelist = new DuelistState("firstDuelist", 0, firstDuelistDeck);
-            var secondDuelist = new DuelistState("firstDuelist", 0, new DeckState(GetCardsForDeck()));
+            var secondDuelist = new DuelistState("secondDuelist", 0, new DeckState(GetCardsForDeck()));
 
             var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
 
