@@ -69,20 +69,29 @@ namespace TradingCardGame.Tests {
             duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(DuelId, FirstDuelistId, 1)));
         }
 
-        [Test] // TODO: redo
-        public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
-            var firstDuelistDeck = new DeckState(GetCardsForDeck());
-            var firstDuelist = new DuelistState(FirstDuelistId, 0, firstDuelistDeck);
-            var secondDuelist = new DuelistState(SecondDuelistId, 0, new DeckState(GetCardsForDeck()));
+        [Test]
+        public void start_with_complete_decks_for_each_player() {
+            var duel = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
 
-            var duel = Duel.Start(DuelId, firstDuelist, secondDuelist);
+            var expectedDeck = new List<CardState>()
+                .Concat(Enumerable.Repeat(Card(0), 2))
+                .Concat(Enumerable.Repeat(Card(1), 2))
+                .Concat(Enumerable.Repeat(Card(2), 3))
+                .Concat(Enumerable.Repeat(Card(3), 4))
+                .Concat(Enumerable.Repeat(Card(4), 3))
+                .Concat(Enumerable.Repeat(Card(5), 2))
+                .Concat(Enumerable.Repeat(Card(6), 2))
+                .Concat(Enumerable.Repeat(Card(7), 1))
+                .Concat(Enumerable.Repeat(Card(8), 1))
+                .ToList();
+            var firstDeck = duel.State.FirstDuelist.Deck;
+            firstDeck.Should().BeEquivalentTo(expectedDeck);
+            var secondDeck = duel.State.SecondDuelist.Deck;
+            secondDeck.Should().BeEquivalentTo(expectedDeck);
+        }
 
-            var expectedDeck = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Hand);
-            duel.State.FirstDuelist.Deck.Cards.Should().BeEquivalentTo(expectedDeck);
-            duel.State.FirstDuelist.Deck.Cards.Should().HaveCount(17);
-            var expectedHand = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Deck.Cards);
-            duel.State.FirstDuelist.Hand.Should().BeEquivalentTo(expectedHand);
-            duel.State.FirstDuelist.Hand.Should().HaveCount(3);
+        private static CardState Card(int manaCost) {
+            return new CardState(manaCost, manaCost);
         }
 
         private List<CardState> GetCardsForDeck() {

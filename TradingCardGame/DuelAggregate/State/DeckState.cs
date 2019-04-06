@@ -7,5 +7,9 @@ namespace TradingCardGame.DuelAggregate.State {
         public DeckState(List<CardState> cards) {
             Cards = cards;
         }
+
+        internal static DeckState From(Deck deck) {
+            throw new System.NotImplementedException();
+        }
     }
 }

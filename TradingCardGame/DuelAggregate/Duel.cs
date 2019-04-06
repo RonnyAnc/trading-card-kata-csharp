@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using LanguageExt;
 using TradingCardGame.DuelAggregate.Events;
@@ -20,13 +19,6 @@ namespace TradingCardGame.DuelAggregate {
             this.turn = new Turn(turn);
         }
 
-        private Duel(string duelId, Duelist firstDuelist, Duelist secondDuelist, string turn) {
-            this.id = duelId;
-            this.firstDuelist = firstDuelist;
-            this.secondDuelist = secondDuelist;
-            this.turn = new Turn(turn);
-        }
-
         public static Duel Start(string id, string firstDuelist, string secondDuelist) {
             var duel = new Duel(id, firstDuelist, secondDuelist, firstDuelist);
             duel.Start();
@@ -36,8 +28,15 @@ namespace TradingCardGame.DuelAggregate {
         private void Start() {
             DomainEvents.Add(new DuelStarted(id));
             DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
+            CreateDecks();
             SetManaSlots();
             RefillMana();
+        }
+
+        private void CreateDecks() {
+            var firstDeck = new Deck();
+            firstDuelist.AssignDeck(firstDeck);
+            secondDuelist.AssignDeck(firstDeck);
         }
 
         private void RefillMana() {
@@ -48,19 +47,6 @@ namespace TradingCardGame.DuelAggregate {
         private void SetManaSlots() {
             firstDuelist.IncrementManaSlot();
             DomainEvents.Add(new ManaSlotSet(id, turn.DuelistId, 1));
-        }
-
-        public static Duel Start(string duelId, DuelistState firstDuelist, DuelistState secondDuelist) {
-            var duel = new Duel(duelId, new Duelist(firstDuelist.Id, firstDuelist.Deck), new Duelist(secondDuelist.Id, secondDuelist.Deck), firstDuelist.Id);
-            duel.Start();
-            duel.DrawInitialHand();
-            return duel;
-        }
-
-        private void DrawInitialHand() {   
-            firstDuelist.DrawCard();
-            firstDuelist.DrawCard();
-            firstDuelist.DrawCard();
         }
     }
 }
