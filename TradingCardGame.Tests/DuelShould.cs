@@ -126,8 +126,8 @@ namespace TradingCardGame.Tests {
             secondDeck.Should().BeEquivalentTo(expectedDeck);
         }
 
-        [Test, Ignore("WIP")]
-        public void draw_three_cards_for_first_turn() {
+        [Test]
+        public void draw_three_cards_as_initial_hand_for_first_turn() {
             var duel = GivenADuel()
                 .WithId(DuelId)
                 .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))

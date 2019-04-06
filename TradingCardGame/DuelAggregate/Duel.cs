@@ -29,7 +29,14 @@ namespace TradingCardGame.DuelAggregate {
             turn = new Turn(firstDuelist.Id);
             SetManaSlots();
             RefillMana();
+            DrawInitialHand();
             DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
+        }
+
+        private void DrawInitialHand() {
+            firstDuelist.DrawCard();
+            firstDuelist.DrawCard();
+            firstDuelist.DrawCard();
         }
 
         private void RefillMana() {
