@@ -27,12 +27,20 @@ namespace TradingCardGame.DuelAggregate {
             cards = ShuffleCards(orderedCards);
         }
 
+        private Deck(IList<Card> cards) {
+            this.cards = cards.ToList();
+        }
+
         private static List<Card> ShuffleCards(IList<Card> orderedCards) {
             return orderedCards.Shuffle().ToList();
         }
 
         private static IEnumerable<Card> CreateCards(int manaCost, int amountOfCards) {
             return Enumerable.Repeat(new Card(manaCost), amountOfCards);
+        }
+
+        public static Deck Restore(IList<Card> cards) {
+            return new Deck(cards);
         }
     }
 }

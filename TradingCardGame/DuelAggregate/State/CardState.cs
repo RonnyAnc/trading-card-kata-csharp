@@ -12,6 +12,14 @@
             return ManaCost == other.ManaCost && Damage == other.Damage;
         }
 
+        internal static CardState From(Card card) {
+            return new CardState(card.ManaCost, card.Damage);
+        }
+
+        internal Card ToEntity() {
+            return new Card(ManaCost);
+        }
+
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
@@ -23,10 +31,6 @@
             unchecked {
                 return (ManaCost * 397) ^ Damage;
             }
-        }
-
-        internal static CardState From(Card card) {
-            return new CardState(card.ManaCost, card.Damage);
         }
     }
 }

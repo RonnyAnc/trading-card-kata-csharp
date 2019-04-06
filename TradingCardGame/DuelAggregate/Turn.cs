@@ -1,7 +1,7 @@
 ﻿using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.DuelAggregate {
-    internal class Turn : TurnState {
+    internal class Turn {
         public string DuelistId { get; }
 
         public Turn(string duelistId) {
