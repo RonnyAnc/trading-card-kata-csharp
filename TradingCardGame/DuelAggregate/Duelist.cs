@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.DuelAggregate {
-    internal class Duelist {
+    public class Duelist {
         private List<ManaSlot> manaSlots;
         private Deck deck;
         private List<Card> hand;
@@ -35,6 +34,10 @@ namespace TradingCardGame.DuelAggregate {
 
         public static Duelist Restore(string id, Deck deck) {
             return new Duelist(id, deck);
+        }
+
+        public void DrawCard() {
+            hand.Add(deck.TakeTopCard());
         }
     }
 }

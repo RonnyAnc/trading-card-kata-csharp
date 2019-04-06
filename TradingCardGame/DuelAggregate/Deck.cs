@@ -42,5 +42,12 @@ namespace TradingCardGame.DuelAggregate {
         public static Deck Restore(IList<Card> cards) {
             return new Deck(cards);
         }
+
+        public Card TakeTopCard() {
+            var topCard = cards.Last();
+            var lastCardIndex = cards.Count - 1;
+            cards.RemoveAt(lastCardIndex);
+            return topCard;
+        }
     }
 }

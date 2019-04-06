@@ -1,0 +1,36 @@
+﻿using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using TradingCardGame.DuelAggregate;
+using TradingCardGame.Tests.Helpers;
+
+namespace TradingCardGame.Tests.DuelAggregate {
+    public class DuelistShould {
+        [Test]
+        public void draw_top_deck_card() {
+            var duelist = GivenADuelist()
+                .WithDeck(
+                    GivenADeck()
+                        .WithCards(3, 1)
+                        .WithCards(2, 2)
+                        .WithCards(3, 1))
+                .Build();
+
+            duelist.DrawCard();
+
+            var drawedCard = new Card(3);
+            duelist.Hand.Single().Should().Be(drawedCard);
+            duelist.Deck.Should().HaveCount(3);
+            duelist.Deck.Last().Should().NotBe(new Card(3));
+            duelist.Deck.Count(card => card.ManaCost is 3).Should().Be(1);
+        }
+
+        private static DeckBuilder GivenADeck() {
+            return new DeckBuilder();
+        }
+
+        private static DuelistBuilder GivenADuelist() {
+            return new DuelistBuilder();
+        }
+    }
+}

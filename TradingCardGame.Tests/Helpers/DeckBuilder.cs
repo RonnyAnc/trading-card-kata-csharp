@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.Tests.Helpers {
-    internal static class DeckFactory {
+    public class DeckBuilder {
+        private readonly List<CardState> cards = new List<CardState>();
+
         public static ReadOnlyCollection<CardState> CompletedDeck() {
             return new List<CardState>()
                 .Concat(Enumerable.Repeat(Card(0), 2))
@@ -22,6 +25,15 @@ namespace TradingCardGame.Tests.Helpers {
 
         private static CardState Card(int manaCost) {
             return new CardState(manaCost, manaCost);
+        }
+
+        public ReadOnlyCollection<CardState> BuildState() {
+            return cards.AsReadOnly();
+        }
+
+        public DeckBuilder WithCards(int manaCost, int amountOfCards) {
+            cards.AddRange(Enumerable.Repeat(new CardState(manaCost, manaCost), amountOfCards));
+            return this;
         }
     }
 }

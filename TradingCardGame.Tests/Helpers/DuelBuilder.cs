@@ -9,12 +9,12 @@ namespace TradingCardGame.Tests.Helpers {
         private string id;
 
         public DuelBuilder WithFirstDuelist(DuelistBuilder duelist) {
-            this.firstDuelist = duelist.Build();
+            this.firstDuelist = duelist.BuildState();
             return this;
         }
 
         public DuelBuilder WithSecondDuelist(DuelistBuilder duelist) {
-            this.secondDuelist = duelist.Build();
+            this.secondDuelist = duelist.BuildState();
             return this;
         }
 

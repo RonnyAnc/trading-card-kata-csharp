@@ -119,16 +119,23 @@ namespace TradingCardGame.Tests {
         public void start_with_complete_different_decks_for_each_player() {
             var duel = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
 
-            var expectedDeck = DeckFactory.CompletedDeck();
+            var expectedDeck = DeckBuilder.CompletedDeck();
             var firstDeck = duel.State.FirstDuelist.DeckCards;
             firstDeck.Should().BeEquivalentTo(expectedDeck);
             var secondDeck = duel.State.SecondDuelist.DeckCards;
             secondDeck.Should().BeEquivalentTo(expectedDeck);
         }
 
-        [Test, Ignore("Pending Refactor")]
+        [Test, Ignore("WIP")]
         public void draw_three_cards_for_first_turn() {
-            var duel = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
 
             duel.State.FirstDuelist.Hand.Should().HaveCount(3);
             duel.State.FirstDuelist.DeckCards.Should().HaveCount(17);

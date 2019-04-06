@@ -16,7 +16,7 @@
             return new CardState(card.ManaCost, card.Damage);
         }
 
-        internal Card ToEntity() {
+        public Card ToEntity() {
             return new Card(ManaCost);
         }
 
