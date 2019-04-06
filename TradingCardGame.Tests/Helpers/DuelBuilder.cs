@@ -1,7 +1,7 @@
 ﻿using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.State;
 
-namespace TradingCardGame.Tests.Builders {
+namespace TradingCardGame.Tests.Helpers {
     public class DuelBuilder {
         private DuelistState firstDuelist;
         private DuelistState secondDuelist;

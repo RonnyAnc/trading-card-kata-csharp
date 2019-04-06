@@ -1,7 +1,7 @@
 using System;
 
 namespace TradingCardGame.DuelAggregate {
-    internal class Card : IEquatable<Card> {
+    public class Card : IEquatable<Card> {
         public int ManaCost { get; }
         public int Damage { get; }
 

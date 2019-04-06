@@ -4,9 +4,9 @@ using System.Linq;
 using SharedKernel;
 
 namespace TradingCardGame.DuelAggregate {
-    internal class Deck {
+    public class Deck {
         private readonly List<Card> cards;
-        internal ReadOnlyCollection<Card> Cards => cards.AsReadOnly();
+        public ReadOnlyCollection<Card> Cards => cards.AsReadOnly();
 
         public static Deck Create() {
             return new Deck();

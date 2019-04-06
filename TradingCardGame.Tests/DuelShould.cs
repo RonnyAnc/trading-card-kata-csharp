@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
-using TradingCardGame.Tests.Builders;
+using TradingCardGame.Tests.Helpers;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {
@@ -116,38 +116,14 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void start_with_complete_decks_for_each_player() {
+        public void start_with_complete_different_decks_for_each_player() {
             var duel = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
 
-            var expectedDeck = new List<CardState>()
-                .Concat(Enumerable.Repeat(Card(0), 2))
-                .Concat(Enumerable.Repeat(Card(1), 2))
-                .Concat(Enumerable.Repeat(Card(2), 3))
-                .Concat(Enumerable.Repeat(Card(3), 4))
-                .Concat(Enumerable.Repeat(Card(4), 3))
-                .Concat(Enumerable.Repeat(Card(5), 2))
-                .Concat(Enumerable.Repeat(Card(6), 2))
-                .Concat(Enumerable.Repeat(Card(7), 1))
-                .Concat(Enumerable.Repeat(Card(8), 1))
-                .ToList();
+            var expectedDeck = DeckFactory.CompletedDeck();
             var firstDeck = duel.State.FirstDuelist.DeckCards;
             firstDeck.Should().BeEquivalentTo(expectedDeck);
             var secondDeck = duel.State.SecondDuelist.DeckCards;
             secondDeck.Should().BeEquivalentTo(expectedDeck);
-        }
-
-        [Test] // TODO: move to a DeckShould test class
-        public void start_with_decks_shuffled_decks() {
-            var duelOne = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
-            var duelTwo = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
-
-            var firstDeckFromOne = duelOne.State.FirstDuelist.DeckCards;
-            var secondDeckFromOne = duelOne.State.SecondDuelist.DeckCards;
-            ShouldNotBeInSameOrder(firstDeckFromOne, secondDeckFromOne);
-            var firstDeckFromTwo = duelTwo.State.FirstDuelist.DeckCards;
-            var secondDeckFromTwo = duelTwo.State.SecondDuelist.DeckCards;
-            ShouldNotBeInSameOrder(firstDeckFromOne, firstDeckFromTwo);
-            ShouldNotBeInSameOrder(secondDeckFromOne, secondDeckFromTwo);
         }
 
         [Test, Ignore("Pending Refactor")]
@@ -160,12 +136,6 @@ namespace TradingCardGame.Tests {
 
         private static DuelBuilder GivenADuel() {
             return new DuelBuilder();
-        }
-
-        private static void ShouldNotBeInSameOrder(ReadOnlyCollection<CardState> firstDeckFromOne, ReadOnlyCollection<CardState> secondDeckFromOne) {
-            var firstDeck = string.Join("", firstDeckFromOne.Select(c => c.ManaCost));
-            var secondDeck = string.Join("", secondDeckFromOne.Select(c => c.ManaCost));
-            firstDeck.Should().NotBe(secondDeck);
         }
 
         private static CardState Card(int manaCost) {
