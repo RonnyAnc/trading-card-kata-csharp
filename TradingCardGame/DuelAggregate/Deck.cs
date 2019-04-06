@@ -20,14 +20,18 @@ namespace TradingCardGame.DuelAggregate {
                 .Concat(CreateCards(7, 1))
                 .Concat(CreateCards(8, 1))
                 .ToList();
-            cards = new List<Card>();
-            var r = new Random();
-            while (orderedCards.Count > 0)
-            {
-                var randomIndex = r.Next(0, orderedCards.Count);
-                cards.Add(orderedCards[randomIndex]); 
+            cards = ShuffleCards(orderedCards);
+        }
+
+        private static List<Card> ShuffleCards(IList<Card> orderedCards) {
+            var shuffledCards = new List<Card>();
+            var random = new Random();
+            while (orderedCards.Count > 0) {
+                var randomIndex = random.Next(0, orderedCards.Count);
+                shuffledCards.Add(orderedCards[randomIndex]);
                 orderedCards.RemoveAt(randomIndex);
             }
+            return shuffledCards;
         }
 
         private static IEnumerable<Card> CreateCards(int manaCost, int amountOfCards) {
