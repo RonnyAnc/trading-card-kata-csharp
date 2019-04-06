@@ -19,9 +19,9 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_a_duelist_joined_when_adding_a_duelist() {
+        public void prepare_a_duelist_joined_event_when_adding_a_duelist() {
             const string duelId = "anyId";
-            var duelCall = DuelCall.Restore(duelId, Option<DuelistState>.None, Option<DuelistState>.None);
+            var duelCall = DuelCall.Restore(duelId, new FreeSpot(), new FreeSpot());
 
             const string duelistId = "aDuelist";
             duelCall.AddDuelist(duelistId);
@@ -31,9 +31,9 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_an_all_duelists_joined_when_both_duelist_are_in_the_duel() {
+        public void prepare_an_all_duelists_joined_event_when_both_duelist_are_in_the_duel() {
             const string duelId = "anyId";
-            var duelCall = DuelCall.Restore(duelId, new DuelistState("firstDuelist", 0, new DeckState(new List<CardState>())), Option<DuelistState>.None);
+            var duelCall = DuelCall.Restore(duelId, "firstDuelist", new FreeSpot());
 
             const string secondDuelist = "secondDuelist";
             duelCall.AddDuelist(secondDuelist);

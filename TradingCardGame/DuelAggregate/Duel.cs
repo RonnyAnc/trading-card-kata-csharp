@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using LanguageExt;
 using TradingCardGame.DuelAggregate.Events;
@@ -61,15 +61,6 @@ namespace TradingCardGame.DuelAggregate {
             firstDuelist.DrawCard();
             firstDuelist.DrawCard();
             firstDuelist.DrawCard();
-        }
-    }
-
-    internal class Card {
-        public int ManaCost { get; }
-        public int Damage { get; }
-        public Card(int manaCost, int damage) {
-            ManaCost = manaCost;
-            Damage = damage;
         }
     }
 }
