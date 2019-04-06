@@ -10,20 +10,18 @@ using List = LanguageExt.List;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {
+        private const string DuelId = "anyId";
+
         [Test]
         public void prepare_a_duel_started_event_when_starting_a_duel() {
-            const string duelId = "anyId";
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
-
-            duel.Events.Should().Contain(x => x.Equals(new DuelStarted(duelId)));
+            duel.Events.Should().Contain(x => x.Equals(new DuelStarted(DuelId)));
         }
 
         [Test]
         public void start_a_duel_with_two_players() {
-            const string duelId = "anyId";
-
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
             duel.State.FirstDuelist.Id.Should().Be("firstDuelist");
             duel.State.SecondDuelist.Id.Should().Be("secondDuelist");
@@ -31,66 +29,53 @@ namespace TradingCardGame.Tests {
 
         [Test]
         public void prepare_a_duelist_turn_started_event_when_starting_a_duel() {
-            const string duelId = "anyId";
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
-
-            duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(duelId, "firstDuelist")));
+            duel.Events.Should().Contain(x => x.Equals(new DuelistTurnStarted(DuelId, "firstDuelist")));
         }
 
         [Test]
         public void give_initial_turn_to_first_duelist() {
-            const string duelId = "anyId";
-
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
             duel.State.Turn.DuelistId.Should().Be("firstDuelist");
         }
 
         [Test]
         public void prepare_mana_slot_set_event_when_setting_mana_slots_when_starting_a_duel() {
-            const string duelId = "anyId";
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
-
-            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(duelId, "firstDuelist", 1)));
+            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(DuelId, "firstDuelist", 1)));
         }
 
         [Test]
         public void set_one_mana_slot_to_first_duelist_when_starting_a_duel() {
-            const string duelId = "anyId";
-
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
             duel.State.FirstDuelist.ManaSlots.Should().Be(1);
         }
 
         [Test]
         public void refill_mana_to_first_duelist_when_starting_a_duel() {
-            const string duelId = "anyId";
-
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
             duel.State.FirstDuelist.Mana.Should().Be(1);
         }
 
         [Test]
         public void prepare_mana_refilled_event_when_starting_a_duel() {
-            const string duelId = "anyId";
+            var duel = Duel.Start(DuelId, "firstDuelist", "secondDuelist");
 
-            var duel = Duel.Start(duelId, "firstDuelist", "secondDuelist");
-
-            duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(duelId, "firstDuelist", 1)));
+            duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(DuelId, "firstDuelist", 1)));
         }
 
         [Test]
         public void draw_three_cards_for_first_duelist_from_his_deck_when_his_first_turn_started() {
-            const string duelId = "anyId";
             var firstDuelistDeck = new DeckState(GetCardsForDeck());
             var firstDuelist = new DuelistState("firstDuelist", 0, firstDuelistDeck);
             var secondDuelist = new DuelistState("secondDuelist", 0, new DeckState(GetCardsForDeck()));
 
-            var duel = Duel.Start(duelId, firstDuelist, secondDuelist);
+            var duel = Duel.Start(DuelId, firstDuelist, secondDuelist);
 
             var expectedDeck = firstDuelistDeck.Cards.Except(duel.State.FirstDuelist.Hand);
             duel.State.FirstDuelist.Deck.Cards.Should().BeEquivalentTo(expectedDeck);
