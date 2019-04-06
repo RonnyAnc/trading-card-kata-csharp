@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using LanguageExt;
 using NUnit.Framework;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
-using List = LanguageExt.List;
 
 namespace TradingCardGame.Tests {
     public class DuelShould {

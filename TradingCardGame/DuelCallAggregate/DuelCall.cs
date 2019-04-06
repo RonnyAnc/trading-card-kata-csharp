@@ -7,8 +7,7 @@ namespace TradingCardGame.DuelCallAggregate {
         private Either<FreeSpot, string> spotOne = new FreeSpot();
         private Either<FreeSpot, string> spotTwo = new FreeSpot();
 
-        private DuelCall(string id, Either<FreeSpot, string> duelistOne, Either<FreeSpot, string> duelistTwo)
-        {
+        private DuelCall(string id, Either<FreeSpot, string> duelistOne, Either<FreeSpot, string> duelistTwo) {
             this.id = id;
             duelistOne.Map(duelistId => spotOne = duelistId);
             duelistTwo.Map(duelistId => spotOne = duelistId);

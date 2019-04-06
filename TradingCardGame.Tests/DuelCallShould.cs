@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
-using LanguageExt;
+﻿using FluentAssertions;
 using NUnit.Framework;
-using TradingCardGame.DuelAggregate.State;
 using TradingCardGame.DuelCallAggregate;
 using TradingCardGame.DuelCallAggregate.Events;
 
 namespace TradingCardGame.Tests {
     public class DuelCallShould {
         [Test]
-        public void prepare_a_duel_called_event_when_new_duel_is_created()
-        {
+        public void prepare_a_duel_called_event_when_new_duel_is_created() {
             const string duelId = "anyId";
             var duelCall = DuelCall.Create(duelId);
 
