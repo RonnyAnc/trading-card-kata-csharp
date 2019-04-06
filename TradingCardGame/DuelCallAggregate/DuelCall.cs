@@ -1,5 +1,4 @@
 ﻿using LanguageExt;
-using TradingCardGame.DuelAggregate.State;
 using TradingCardGame.DuelCallAggregate.Events;
 
 namespace TradingCardGame.DuelCallAggregate {
@@ -13,12 +12,6 @@ namespace TradingCardGame.DuelCallAggregate {
             this.id = id;
             duelistOne.Map(duelistId => spotOne = duelistId);
             duelistTwo.Map(duelistId => spotOne = duelistId);
-        }
-
-        private static Option<string> GetDuelistFrom(Option<DuelistState> first) {
-            return first.BiBind(
-                duelist => duelist.Id,
-                () => Option<string>.None);
         }
 
         public static DuelCall Create(string id) {
