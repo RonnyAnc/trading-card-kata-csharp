@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -88,6 +89,26 @@ namespace TradingCardGame.Tests {
             firstDeck.Should().BeEquivalentTo(expectedDeck);
             var secondDeck = duel.State.SecondDuelist.Deck;
             secondDeck.Should().BeEquivalentTo(expectedDeck);
+        }
+
+        [Test]
+        public void start_with_decks_shuffled_decks() {
+            var duelOne = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
+            var duelTwo = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
+
+            var firstDeckFromOne = duelOne.State.FirstDuelist.Deck;
+            var secondDeckFromOne = duelOne.State.SecondDuelist.Deck;
+            ShouldNotBeInSameOrder(firstDeckFromOne, secondDeckFromOne);
+            var firstDeckFromTwo = duelTwo.State.FirstDuelist.Deck;
+            var secondDeckFromTwo = duelTwo.State.SecondDuelist.Deck;
+            ShouldNotBeInSameOrder(firstDeckFromOne, firstDeckFromTwo);
+            ShouldNotBeInSameOrder(secondDeckFromOne, secondDeckFromTwo);
+        }
+
+        private static void ShouldNotBeInSameOrder(ReadOnlyCollection<CardState> firstDeckFromOne, ReadOnlyCollection<CardState> secondDeckFromOne) {
+            var firstDeck = string.Join("", firstDeckFromOne.Select(c => c.ManaCost));
+            var secondDeck = string.Join("", secondDeckFromOne.Select(c => c.ManaCost));
+            firstDeck.Should().NotBe(secondDeck);
         }
 
         private static CardState Card(int manaCost) {

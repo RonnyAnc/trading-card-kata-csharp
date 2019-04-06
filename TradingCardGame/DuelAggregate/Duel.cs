@@ -34,9 +34,8 @@ namespace TradingCardGame.DuelAggregate {
         }
 
         private void CreateDecks() {
-            var firstDeck = new Deck();
-            firstDuelist.AssignDeck(firstDeck);
-            secondDuelist.AssignDeck(firstDeck);
+            firstDuelist.AssignDeck(new Deck());
+            secondDuelist.AssignDeck(new Deck());
         }
 
         private void RefillMana() {
