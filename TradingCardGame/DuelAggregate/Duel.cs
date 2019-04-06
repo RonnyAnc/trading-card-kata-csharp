@@ -12,15 +12,15 @@ namespace TradingCardGame.DuelAggregate {
 
         public DuelState State => new DuelState(DuelistState.From(firstDuelist), DuelistState.From(secondDuelist), turn);
 
-        private Duel(string id, string firstDuelist, string secondDuelist, string turn) {
+        private Duel(string id, Duelist firstDuelist, Duelist secondDuelist, Turn turn) {
             this.id = id;
-            this.firstDuelist = new Duelist(firstDuelist);
-            this.secondDuelist = new Duelist(secondDuelist);
-            this.turn = new Turn(turn);
+            this.firstDuelist = firstDuelist;
+            this.secondDuelist = secondDuelist;
+            this.turn = turn;
         }
 
         public static Duel Start(string id, string firstDuelist, string secondDuelist) {
-            var duel = new Duel(id, firstDuelist, secondDuelist, firstDuelist);
+            var duel = new Duel(id, new Duelist(firstDuelist), new Duelist(secondDuelist), new Turn(firstDuelist));
             duel.Start();
             return duel;
         }
