@@ -19,8 +19,10 @@ namespace TradingCardGame.DuelAggregate {
             this.turn = turn;
         }
 
-        public static Duel Start(string id, string firstDuelist, string secondDuelist) {
-            var duel = new Duel(id, new Duelist(firstDuelist), new Duelist(secondDuelist), new Turn(firstDuelist));
+        public static Duel Start(string id, string firstDuelistId, string secondDuelistId) {
+            var firstDuelist = Duelist.Create(firstDuelistId, Deck.Create());
+            var secondDuelist = Duelist.Create(secondDuelistId, Deck.Create());
+            var duel = new Duel(id, firstDuelist, secondDuelist, new Turn(firstDuelistId));
             duel.Start();
             return duel;
         }
@@ -28,14 +30,8 @@ namespace TradingCardGame.DuelAggregate {
         private void Start() {
             DomainEvents.Add(new DuelStarted(id));
             DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
-            CreateDecks();
             SetManaSlots();
             RefillMana();
-        }
-
-        private void CreateDecks() {
-            firstDuelist.AssignDeck(new Deck());
-            secondDuelist.AssignDeck(new Deck());
         }
 
         private void RefillMana() {

@@ -2,13 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using SharedKernel;
 
 namespace TradingCardGame.DuelAggregate {
     internal class Deck {
         private readonly List<Card> cards;
         internal ReadOnlyCollection<Card> Cards => cards.AsReadOnly();
 
-        public Deck() {
+        public static Deck Create() {
+            return new Deck();
+        }
+
+        private Deck() {
             var orderedCards = new List<Card>()
                 .Concat(CreateCards(0, 2))
                 .Concat(CreateCards(1, 2))
@@ -24,14 +29,7 @@ namespace TradingCardGame.DuelAggregate {
         }
 
         private static List<Card> ShuffleCards(IList<Card> orderedCards) {
-            var shuffledCards = new List<Card>();
-            var random = new Random();
-            while (orderedCards.Count > 0) {
-                var randomIndex = random.Next(0, orderedCards.Count);
-                shuffledCards.Add(orderedCards[randomIndex]);
-                orderedCards.RemoveAt(randomIndex);
-            }
-            return shuffledCards;
+            return orderedCards.Shuffle().ToList();
         }
 
         private static IEnumerable<Card> CreateCards(int manaCost, int amountOfCards) {

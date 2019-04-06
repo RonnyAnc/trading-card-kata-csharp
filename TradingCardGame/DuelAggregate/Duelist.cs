@@ -12,8 +12,13 @@ namespace TradingCardGame.DuelAggregate {
         public int Mana => manaSlots.Filter(slot => slot.IsFilled).Count();
         public ReadOnlyCollection<Card> Deck => deck.Cards;
 
-        internal Duelist(string id) {
+        public static Duelist Create(string id, Deck deck) {
+            return new Duelist(id, deck);
+        }
+
+        private Duelist(string id, Deck deck) {
             Id = id;
+            this.deck = deck;
             manaSlots = new List<ManaSlot>();
         }
 
@@ -23,10 +28,6 @@ namespace TradingCardGame.DuelAggregate {
 
         internal void RefillMana() {
             manaSlots = manaSlots.Map(_ => ManaSlot.Filled()).ToList();
-        }
-
-        internal void AssignDeck(Deck deck) {
-            this.deck = deck;
         }
     }
 }
