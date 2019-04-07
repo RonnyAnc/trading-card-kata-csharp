@@ -18,7 +18,7 @@ namespace TradingCardGame.Tests.Helpers {
         }
 
         public Duelist Build() {
-            var deckCards = deck.Select(card => card.ToEntity()).ToList();
+            var deckCards = deck.Select(card => card.ToValueObject()).ToList();
             return Duelist.Restore(id, Deck.Restore(deckCards));
         }
 

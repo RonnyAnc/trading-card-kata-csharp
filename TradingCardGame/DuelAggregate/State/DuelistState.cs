@@ -24,7 +24,7 @@ namespace TradingCardGame.DuelAggregate.State {
         }
 
         internal Duelist ToEntity() {
-            return Duelist.Restore(Id, Deck.Restore(DeckCards.Select(c => c.ToEntity()).ToList()));
+            return Duelist.Restore(Id, Deck.Restore(DeckCards.Select(c => c.ToValueObject()).ToList()));
         }
     }
 }

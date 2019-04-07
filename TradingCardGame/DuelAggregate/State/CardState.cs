@@ -8,16 +8,16 @@
             Damage = damage;
         }
 
+        public Card ToValueObject() {
+            return new Card(ManaCost);
+        }
+
         protected bool Equals(CardState other) {
             return ManaCost == other.ManaCost && Damage == other.Damage;
         }
 
         internal static CardState From(Card card) {
             return new CardState(card.ManaCost, card.Damage);
-        }
-
-        public Card ToEntity() {
-            return new Card(ManaCost);
         }
 
         public override bool Equals(object obj) {

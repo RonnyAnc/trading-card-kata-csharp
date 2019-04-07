@@ -1,3 +1,4 @@
+using System.Linq;
 using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
 
@@ -33,6 +34,7 @@ namespace TradingCardGame.DuelAggregate {
             SetManaSlots();
             RefillMana();
             DrawInitialHand();
+            firstDuelist.DrawCard();
             DomainEvents.Add(new FirstDuelistTurnStarted(id, firstDuelist.Id));
         }
 
@@ -40,6 +42,8 @@ namespace TradingCardGame.DuelAggregate {
             firstDuelist.DrawCard();
             firstDuelist.DrawCard();
             firstDuelist.DrawCard();
+            var initialHand = DuelistState.From(firstDuelist).Hand;
+            DomainEvents.Add(new InitialHandDrawed(id, firstDuelist.Id, initialHand));
         }
 
         private void RefillMana() {
