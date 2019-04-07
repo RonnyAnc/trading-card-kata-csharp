@@ -33,7 +33,7 @@ namespace TradingCardGame.DuelAggregate {
             SetManaSlots();
             RefillMana();
             DrawInitialHand();
-            DomainEvents.Add(new DuelistTurnStarted(id, firstDuelist.Id));
+            DomainEvents.Add(new FirstDuelistTurnStarted(id, firstDuelist.Id));
         }
 
         private void DrawInitialHand() {

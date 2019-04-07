@@ -1,16 +1,16 @@
 ﻿using System;
 
 namespace TradingCardGame.DuelAggregate.Events {
-    public class DuelistTurnStarted : DomainEvent, IEquatable<DuelistTurnStarted> {
+    public class FirstDuelistTurnStarted : DomainEvent, IEquatable<FirstDuelistTurnStarted> {
         public string DuelId { get; }
         public string DuelistId { get; }
 
-        public DuelistTurnStarted(string duelId, string duelistId) {
+        public FirstDuelistTurnStarted(string duelId, string duelistId) {
             DuelId = duelId;
             DuelistId = duelistId;
         }
 
-        public bool Equals(DuelistTurnStarted other) {
+        public bool Equals(FirstDuelistTurnStarted other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return string.Equals(DuelId, other.DuelId) && string.Equals(DuelistId, other.DuelistId);
@@ -20,7 +20,7 @@ namespace TradingCardGame.DuelAggregate.Events {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DuelistTurnStarted) obj);
+            return Equals((FirstDuelistTurnStarted) obj);
         }
 
         public override int GetHashCode() {
