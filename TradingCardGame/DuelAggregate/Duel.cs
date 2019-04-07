@@ -84,8 +84,10 @@ namespace TradingCardGame.DuelAggregate {
             return new Duel(duel.Id, duel.FirstDuelist.ToEntity(), duel.SecondDuelist.ToEntity(), duel.Turn.ToValueObject());
         }
 
-        public void PlayCard(string cardDuelist, CardState card) {
-            throw new System.NotImplementedException();
+        public void PlayCard(CardState cardState) {
+            var card = cardState.ToValueObject();
+            secondDuelist.PlayCard(card);
+            firstDuelist.ReceiveDamage(card.Damage);
         }
     }
 }

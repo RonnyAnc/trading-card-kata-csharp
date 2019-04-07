@@ -12,9 +12,10 @@ namespace TradingCardGame.Tests.DuelAggregate {
         private const string FirstDuelistId = "firstDuelist";
         private const string SecondDuelistId = "secondDuelist";
 
-        [Test, Ignore("WIP")]
+        [Test]
         public void play_a_card_from_turned_duelist_hand_damaging_other_duelist() {
             var maxMana = 10;
+            var targetDuelistHealth = 20;
             var duel = GivenADuel()
                 .WithId(DuelId)
                 .WithFirstDuelist(
@@ -23,6 +24,7 @@ namespace TradingCardGame.Tests.DuelAggregate {
                         .WithHand(new HandBuilder().Empty())
                         .WithMana(maxMana)
                         .WithManaSlots(maxMana)
+                        .WithHealth(targetDuelistHealth)
                     )
                 .WithSecondDuelist(
                     new DuelistBuilder()
@@ -40,11 +42,12 @@ namespace TradingCardGame.Tests.DuelAggregate {
                 .Build();
 
             var playedCard = new CardState(2, 2);
-            duel.PlayCard(SecondDuelistId, playedCard);
+            duel.PlayCard(playedCard);
 
             var remainingCard = new CardState(2, 2);
             duel.State.SecondDuelist.Hand.Single().Should().Be(remainingCard);
             duel.State.SecondDuelist.Mana.Should().Be(maxMana - playedCard.ManaCost);
+            duel.State.FirstDuelist.Health.Should().Be(targetDuelistHealth - playedCard.Damage);
         }
 
         private static DuelBuilder GivenADuel() {

@@ -15,12 +15,13 @@ namespace TradingCardGame.Tests.Helpers {
         private int health;
 
         public DuelistState BuildState() {
-            return new DuelistState(this.id, health, this.manaSlots, this.mana, this.deck, this.hand);
+            return new DuelistState(id, health, manaSlots, mana, deck, hand);
         }
 
         public Duelist Build() {
             var deckCards = deck.Select(card => card.ToValueObject()).ToList();
-            return Duelist.Restore(id, Deck.Restore(deckCards));
+            var handCards = hand.Select(card => card.ToValueObject()).ToList();
+            return Duelist.Restore(id, health, mana, manaSlots, Deck.Restore(deckCards), handCards);
         }
 
         public DuelistBuilder InitialDuelistState(string duelistId) {
@@ -54,6 +55,11 @@ namespace TradingCardGame.Tests.Helpers {
 
         public DuelistBuilder WithManaSlots(int manaSlots) {
             this.manaSlots = manaSlots;
+            return this;
+        }
+
+        public DuelistBuilder WithHealth(int health) {
+            this.health = health;
             return this;
         }
     }
