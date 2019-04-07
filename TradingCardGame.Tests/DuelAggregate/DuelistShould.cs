@@ -25,6 +25,18 @@ namespace TradingCardGame.Tests.DuelAggregate {
             duelist.Deck.Count(card => card.ManaCost is 3).Should().Be(1);
         }
 
+        [Test]
+        public void create_a_duelist_with_initial_state() {
+            var deck = Deck.Create();
+            var duelist = Duelist.Create("duelistId", deck);
+
+            duelist.Health.Should().Be(30);
+            duelist.Deck.Should().BeEquivalentTo(deck.Cards);
+            duelist.Hand.Should().BeEmpty();
+            duelist.ManaSlots.Should().Be(0);
+            duelist.Mana.Should().Be(0);
+        }
+
         private static DeckBuilder GivenADeck() {
             return new DeckBuilder();
         }
