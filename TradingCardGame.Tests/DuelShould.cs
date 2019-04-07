@@ -206,6 +206,23 @@ namespace TradingCardGame.Tests {
             duel.State.Turn.IsInDecisionPhase.Should().BeTrue();
         }
 
+        [Test]
+        public void prepare_a_decision_phase_started_event_after_checking_hand_size() {
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
+
+            var cardsInHand = 4;
+            duel.Events.Should().ContainInOrder(
+                new HandSizeApproved(DuelId, FirstDuelistId, cardsInHand),
+                new DecisionPhaseStarted(DuelId, FirstDuelistId));
+        }
+
         private static DuelistState InitialDuelistState(string firstDuelistId) {
             return new DuelistBuilder().InitialDuelistState(firstDuelistId).BuildState();
         }

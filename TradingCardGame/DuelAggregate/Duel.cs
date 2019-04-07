@@ -44,6 +44,7 @@ namespace TradingCardGame.DuelAggregate {
 
         private void StartDecisionPhase() {
             turn.StartDecisionPhase();
+            DomainEvents.Add(new DecisionPhaseStarted(id, firstDuelist.Id));
         }
 
         private void StartFirstTurn() {
