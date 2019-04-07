@@ -97,8 +97,7 @@ namespace TradingCardGame.Tests {
             duel.StartNextTurn();
 
             var initialHand = duel.State.FirstDuelist.Hand.ToList().SkipLast().ToList().AsReadOnly();
-            duel.Events.Should().ContainInOrder(
-                new FirstDuelistTurnStarted(DuelId, FirstDuelistId),
+            duel.Events.Should().ContainInOrder(new FirstDuelistTurnStarted(DuelId, FirstDuelistId),
                 new InitialHandDrawed(DuelId, FirstDuelistId, initialHand));
         }
 
@@ -128,8 +127,7 @@ namespace TradingCardGame.Tests {
             duel.StartNextTurn();
 
             var initialHand = duel.State.FirstDuelist.Hand.ToList().SkipLast().ToList().AsReadOnly();
-            duel.Events.Should().ContainInOrder(
-                new InitialHandDrawed(DuelId, FirstDuelistId, initialHand),
+            duel.Events.Should().ContainInOrder(new InitialHandDrawed(DuelId, FirstDuelistId, initialHand),
                 new ManaSlotSet(DuelId, FirstDuelistId, 1));
         }
 
@@ -157,10 +155,8 @@ namespace TradingCardGame.Tests {
                 .Build();
 
             duel.StartNextTurn();
-            duel.Events.Should().ContainInOrder(
-                new ManaSlotSet(DuelId, FirstDuelistId, 1),
-                new ManaRefilled(DuelId, FirstDuelistId, 1)
-                );
+            duel.Events.Should().ContainInOrder(new ManaSlotSet(DuelId, FirstDuelistId, 1),
+                new ManaRefilled(DuelId, FirstDuelistId, 1));
         }
 
         [Test]
@@ -175,9 +171,26 @@ namespace TradingCardGame.Tests {
             duel.StartNextTurn();
 
             var drawedCard = duel.State.FirstDuelist.Hand.Last();
-            duel.Events.Should().ContainInOrder(
-                new ManaRefilled(DuelId, FirstDuelistId, 1),
+            duel.Events.Should().ContainInOrder(new ManaRefilled(DuelId, FirstDuelistId, 1),
                 new CardDrawed(DuelId, FirstDuelistId, drawedCard));
+        }
+
+        [Test]
+        public void prepare_a_hand_size_approved_event_after_drawing_a_card_without_exceeding_the_max_hand_size() {
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
+
+            var drawedCard = duel.State.FirstDuelist.Hand.Last();
+            var cardsInHand = 4;
+            duel.Events.Should().ContainInOrder(
+                new CardDrawed(DuelId, FirstDuelistId, drawedCard),
+                new HandSizeApproved(DuelId, FirstDuelistId, cardsInHand));
         }
 
         private static DuelistState InitialDuelistState(string firstDuelistId) {

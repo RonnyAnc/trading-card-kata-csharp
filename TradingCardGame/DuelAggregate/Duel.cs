@@ -35,6 +35,7 @@ namespace TradingCardGame.DuelAggregate {
             SetManaSlots();
             RefillMana();
             DrawACard();
+            DomainEvents.Add(new HandSizeApproved(id, firstDuelist.Id, firstDuelist.Hand.Count));
         }
 
         private void StartFirstTurn() {
