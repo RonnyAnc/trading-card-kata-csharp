@@ -38,8 +38,12 @@ namespace TradingCardGame.DuelAggregate {
             SetManaSlots();
             RefillMana();
             DrawACard();
-            DomainEvents.Add(new HandSizeApproved(id, firstDuelist.Id, firstDuelist.Hand.Count));
+            CheckHansSize();
             StartDecisionPhase();
+        }
+
+        private void CheckHansSize() {
+            DomainEvents.Add(new HandSizeApproved(id, firstDuelist.Id, firstDuelist.Hand.Count));
         }
 
         private void StartDecisionPhase() {
