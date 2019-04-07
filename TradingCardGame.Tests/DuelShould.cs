@@ -188,9 +188,22 @@ namespace TradingCardGame.Tests {
 
             var drawedCard = duel.State.FirstDuelist.Hand.Last();
             var cardsInHand = 4;
-            duel.Events.Should().ContainInOrder(
-                new CardDrawed(DuelId, FirstDuelistId, drawedCard),
+            duel.Events.Should().ContainInOrder(new CardDrawed(DuelId, FirstDuelistId, drawedCard),
                 new HandSizeApproved(DuelId, FirstDuelistId, cardsInHand));
+        }
+
+        [Test]
+        public void start_decision_phase_after_checking_hand_size() {
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
+
+            duel.State.Turn.IsInDecisionPhase.Should().BeTrue();
         }
 
         private static DuelistState InitialDuelistState(string firstDuelistId) {

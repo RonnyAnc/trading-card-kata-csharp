@@ -9,7 +9,10 @@ namespace TradingCardGame.DuelAggregate {
         private readonly Duelist firstDuelist;
         private readonly Duelist secondDuelist;
 
-        public DuelState State => new DuelState(id, DuelistState.From(firstDuelist), DuelistState.From(secondDuelist), new TurnState(firstDuelist.Id));
+        public DuelState State => new DuelState(id, 
+            DuelistState.From(firstDuelist), 
+            DuelistState.From(secondDuelist), 
+            TurnState.From(turn));
 
         private Duel(string id, Duelist firstDuelist, Duelist secondDuelist, Turn turn) {
             this.id = id;
@@ -36,6 +39,11 @@ namespace TradingCardGame.DuelAggregate {
             RefillMana();
             DrawACard();
             DomainEvents.Add(new HandSizeApproved(id, firstDuelist.Id, firstDuelist.Hand.Count));
+            StartDecisionPhase();
+        }
+
+        private void StartDecisionPhase() {
+            turn.StartDecisionPhase();
         }
 
         private void StartFirstTurn() {
