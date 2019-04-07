@@ -30,11 +30,15 @@ namespace TradingCardGame.DuelAggregate {
         }
 
         public void StartNextTurn() {
-            turn = new Turn(firstDuelist.Id);
+            StartFirstTurn();
+            DrawInitialHand();
             SetManaSlots();
             RefillMana();
-            DrawInitialHand();
             DrawACard();
+        }
+
+        private void StartFirstTurn() {
+            turn = new Turn(firstDuelist.Id);
             DomainEvents.Add(new FirstDuelistTurnStarted(id, firstDuelist.Id));
         }
 

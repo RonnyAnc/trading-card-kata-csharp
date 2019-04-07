@@ -86,7 +86,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_a_initial_hand_drawed_when_starting_first_duelist_turn() {
+        public void prepare_a_initial_hand_drawed_after_first_turn_started() {
             var duel = GivenADuel()
                 .WithId(DuelId)
                 .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
@@ -97,22 +97,9 @@ namespace TradingCardGame.Tests {
             duel.StartNextTurn();
 
             var initialHand = duel.State.FirstDuelist.Hand.ToList().SkipLast().ToList().AsReadOnly();
-            duel.Events.OfType<InitialHandDrawed>().First().Should()
-                .BeEquivalentTo(new InitialHandDrawed(DuelId, FirstDuelistId, initialHand));
-        }
-
-        [Test]
-        public void prepare_mana_slot_set_event_when_starting_a_turn() {
-            var duel = GivenADuel()
-                .WithId(DuelId)
-                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
-                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
-                .WithNoTurn()
-                .Build();
-
-            duel.StartNextTurn();
-
-            duel.Events.Should().Contain(x => x.Equals(new ManaSlotSet(DuelId, FirstDuelistId, 1)));
+            duel.Events.Should().ContainInOrder(
+                new FirstDuelistTurnStarted(DuelId, FirstDuelistId),
+                new InitialHandDrawed(DuelId, FirstDuelistId, initialHand));
         }
 
         [Test]
@@ -130,6 +117,23 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
+        public void prepare_mana_slot_set_event_after_drawing_initial_hand() {
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
+
+            var initialHand = duel.State.FirstDuelist.Hand.ToList().SkipLast().ToList().AsReadOnly();
+            duel.Events.Should().ContainInOrder(
+                new InitialHandDrawed(DuelId, FirstDuelistId, initialHand),
+                new ManaSlotSet(DuelId, FirstDuelistId, 1));
+        }
+
+        [Test]
         public void refill_mana_to_duelist_when_starting_his_turn() {
             var duel = GivenADuel()
                 .WithId(DuelId)
@@ -144,7 +148,7 @@ namespace TradingCardGame.Tests {
         }
 
         [Test]
-        public void prepare_mana_refilled_event_when_starting_a_turn() {
+        public void prepare_mana_refilled_event_after_setting_mana_slots() {
             var duel = GivenADuel()
                 .WithId(DuelId)
                 .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
@@ -153,8 +157,10 @@ namespace TradingCardGame.Tests {
                 .Build();
 
             duel.StartNextTurn();
-
-            duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(DuelId, FirstDuelistId, 1)));
+            duel.Events.Should().ContainInOrder(
+                new ManaSlotSet(DuelId, FirstDuelistId, 1),
+                new ManaRefilled(DuelId, FirstDuelistId, 1)
+                );
         }
 
         [Test]
@@ -169,7 +175,9 @@ namespace TradingCardGame.Tests {
             duel.StartNextTurn();
 
             var drawedCard = duel.State.FirstDuelist.Hand.Last();
-            duel.Events.Should().Contain(x => x.Equals(new CardDrawed(DuelId, FirstDuelistId, drawedCard)));
+            duel.Events.Should().ContainInOrder(
+                new ManaRefilled(DuelId, FirstDuelistId, 1),
+                new CardDrawed(DuelId, FirstDuelistId, drawedCard));
         }
 
         private static DuelistState InitialDuelistState(string firstDuelistId) {
