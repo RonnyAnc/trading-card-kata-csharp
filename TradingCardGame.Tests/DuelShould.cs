@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
-using LanguageExt;
 using NUnit.Framework;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.Events;
@@ -19,7 +16,10 @@ namespace TradingCardGame.Tests {
         public void prepare_a_duel_started_event_when_starting_a_duel() {
             var duel = Duel.Start(DuelId, FirstDuelistId, SecondDuelistId);
 
-            duel.Events.Should().Contain(x => x.Equals(new DuelStarted(DuelId)));
+            var duelStarted = duel.Events.OfType<DuelStarted>().Single();
+            duelStarted.DuelId.Should().Be(DuelId);
+            duelStarted.FirstDuelist.Should().BeEquivalentTo(InitialDuelistState(FirstDuelistId));
+            duelStarted.SecondDuelist.Should().BeEquivalentTo(InitialDuelistState(SecondDuelistId));
         }
 
         [Test]
@@ -141,12 +141,12 @@ namespace TradingCardGame.Tests {
             duel.State.FirstDuelist.DeckCards.Should().HaveCount(17);
         }
 
-        private static DuelBuilder GivenADuel() {
-            return new DuelBuilder();
+        private static DuelistState InitialDuelistState(string firstDuelistId) {
+            return new DuelistBuilder().InitialDuelistState(firstDuelistId).BuildState();
         }
 
-        private static CardState Card(int manaCost) {
-            return new CardState(manaCost, manaCost);
+        private static DuelBuilder GivenADuel() {
+            return new DuelBuilder();
         }
     }
 }

@@ -21,7 +21,10 @@ namespace TradingCardGame.DuelAggregate {
             var firstDuelist = Duelist.Create(firstDuelistId, Deck.Create());
             var secondDuelist = Duelist.Create(secondDuelistId, Deck.Create());
             var duel = new Duel(id, firstDuelist, secondDuelist, null);
-            duel.DomainEvents.Add(new DuelStarted(id));
+            duel.DomainEvents.Add(
+                new DuelStarted(id, 
+                    DuelistState.From(firstDuelist), 
+                    DuelistState.From(secondDuelist)));
             return duel;
         }
 
