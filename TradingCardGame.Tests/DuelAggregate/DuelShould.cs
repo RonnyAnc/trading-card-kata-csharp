@@ -6,7 +6,7 @@ using TradingCardGame.DuelAggregate.Events;
 using TradingCardGame.DuelAggregate.State;
 using TradingCardGame.Tests.Helpers;
 
-namespace TradingCardGame.Tests {
+namespace TradingCardGame.Tests.DuelAggregate {
     public class DuelShould {
         private const string DuelId = "anyId";
         private const string FirstDuelistId = "firstDuelist";
