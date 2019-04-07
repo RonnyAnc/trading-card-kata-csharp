@@ -4,13 +4,15 @@ using System.Linq;
 namespace TradingCardGame.DuelAggregate.State {
     public class DuelistState {
         public string Id { get; }
+        public int Health { get; }
         public int ManaSlots { get; }
         public int Mana { get; }
         public ReadOnlyCollection<CardState> DeckCards { get; }
         public ReadOnlyCollection<CardState> Hand { get; }
 
-        public DuelistState(string id, int manaSlots, int mana, ReadOnlyCollection<CardState> deckCards, ReadOnlyCollection<CardState> hand) {
+        public DuelistState(string id, int health, int manaSlots, int mana, ReadOnlyCollection<CardState> deckCards, ReadOnlyCollection<CardState> hand) {
             Id = id;
+            Health = health;
             ManaSlots = manaSlots;
             Mana = mana;
             DeckCards = deckCards;
@@ -20,7 +22,7 @@ namespace TradingCardGame.DuelAggregate.State {
         internal static DuelistState From(Duelist duelist) {
             var deck = duelist.Deck.Select(CardState.From).ToList().AsReadOnly();
             var hand = duelist.Hand.Select(CardState.From).ToList().AsReadOnly();
-            return new DuelistState(duelist.Id, duelist.ManaSlots, duelist.Mana, deck, hand);
+            return new DuelistState(duelist.Id, duelist.Health, duelist.ManaSlots, duelist.Mana, deck, hand);
         }
 
         internal Duelist ToEntity() {

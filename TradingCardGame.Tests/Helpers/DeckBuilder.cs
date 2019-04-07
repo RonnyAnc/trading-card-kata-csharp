@@ -6,7 +6,7 @@ using TradingCardGame.DuelAggregate.State;
 
 namespace TradingCardGame.Tests.Helpers {
     public class DeckBuilder {
-        private readonly List<CardState> cards = new List<CardState>();
+        private List<CardState> cards = new List<CardState>();
 
         public static ReadOnlyCollection<CardState> CompletedDeck() {
             return new List<CardState>()
@@ -33,6 +33,11 @@ namespace TradingCardGame.Tests.Helpers {
 
         public DeckBuilder WithCards(int manaCost, int amountOfCards) {
             cards.AddRange(Enumerable.Repeat(new CardState(manaCost, manaCost), amountOfCards));
+            return this;
+        }
+
+        public DeckBuilder Empty() {
+            cards = new List<CardState>();
             return this;
         }
     }

@@ -23,6 +23,11 @@ namespace TradingCardGame.Tests.Helpers {
             return this;
         }
 
+        public DuelBuilder WithTurn(string duelistId) {
+            turn = new TurnState(duelistId, true);
+            return this;
+        }
+
         public DuelBuilder WithId(string id) {
             this.id = id;
             return this;

@@ -83,5 +83,9 @@ namespace TradingCardGame.DuelAggregate {
         public static Duel Restore(DuelState duel) {
             return new Duel(duel.Id, duel.FirstDuelist.ToEntity(), duel.SecondDuelist.ToEntity(), duel.Turn.ToValueObject());
         }
+
+        public void PlayCard(string cardDuelist, CardState card) {
+            throw new System.NotImplementedException();
+        }
     }
 }

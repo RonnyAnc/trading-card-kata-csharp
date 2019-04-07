@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Win32.SafeHandles;
 using TradingCardGame.DuelAggregate;
 using TradingCardGame.DuelAggregate.State;
+using TradingCardGame.Tests.DuelAggregate;
 
 namespace TradingCardGame.Tests.Helpers {
     public class DuelistBuilder {
@@ -12,9 +12,10 @@ namespace TradingCardGame.Tests.Helpers {
         private int mana;
         private ReadOnlyCollection<CardState> deck;
         private ReadOnlyCollection<CardState> hand;
+        private int health;
 
         public DuelistState BuildState() {
-            return new DuelistState(this.id, this.manaSlots, this.mana, this.deck, this.hand);
+            return new DuelistState(this.id, health, this.manaSlots, this.mana, this.deck, this.hand);
         }
 
         public Duelist Build() {
@@ -28,6 +29,7 @@ namespace TradingCardGame.Tests.Helpers {
             mana = 0;
             deck = DeckBuilder.CompletedDeck();
             hand = EmptyHand();
+            health = 30;
             return this;
         }
 
@@ -37,6 +39,21 @@ namespace TradingCardGame.Tests.Helpers {
 
         public DuelistBuilder WithDeck(DeckBuilder deck) {
             this.deck = deck.BuildState();
+            return this;
+        }
+
+        public DuelistBuilder WithHand(HandBuilder handBuilder) {
+            this.hand = handBuilder.Build();
+            return this;
+        }
+
+        public DuelistBuilder WithMana(int mana) {
+            this.mana = 10;
+            return this;
+        }
+
+        public DuelistBuilder WithManaSlots(int manaSlots) {
+            this.manaSlots = manaSlots;
             return this;
         }
     }
