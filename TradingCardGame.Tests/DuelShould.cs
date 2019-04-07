@@ -157,6 +157,21 @@ namespace TradingCardGame.Tests {
             duel.Events.Should().Contain(x => x.Equals(new ManaRefilled(DuelId, FirstDuelistId, 1)));
         }
 
+        [Test]
+        public void prepare_a_card_drawed_event_after_refilling_mana() {
+            var duel = GivenADuel()
+                .WithId(DuelId)
+                .WithFirstDuelist(new DuelistBuilder().InitialDuelistState(FirstDuelistId))
+                .WithSecondDuelist(new DuelistBuilder().InitialDuelistState(SecondDuelistId))
+                .WithNoTurn()
+                .Build();
+
+            duel.StartNextTurn();
+
+            var drawedCard = duel.State.FirstDuelist.Hand.Last();
+            duel.Events.Should().Contain(x => x.Equals(new CardDrawed(DuelId, FirstDuelistId, drawedCard)));
+        }
+
         private static DuelistState InitialDuelistState(string firstDuelistId) {
             return new DuelistBuilder().InitialDuelistState(firstDuelistId).BuildState();
         }

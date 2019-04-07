@@ -34,8 +34,14 @@ namespace TradingCardGame.DuelAggregate {
             SetManaSlots();
             RefillMana();
             DrawInitialHand();
-            firstDuelist.DrawCard();
+            DrawACard();
             DomainEvents.Add(new FirstDuelistTurnStarted(id, firstDuelist.Id));
+        }
+
+        private void DrawACard() {
+            firstDuelist.DrawCard();
+            var duelistState = DuelistState.From(firstDuelist);
+            DomainEvents.Add(new CardDrawed(id, duelistState.Id, duelistState.Hand.Last()));
         }
 
         private void DrawInitialHand() {
